@@ -1,0 +1,16 @@
+#ChatContentsBox {
+	overflow-y: auto;
+	height: 70vh;
+}
+
+.myChats {
+	text-align: right;
+	font-size: 25px;
+	/* background-color: rgb(255, 229, 82); */
+}
+
+.yourChats {
+	text-align: left;
+	font-size: 25px;
+	/* background-color: #28e968; */
+}

@@ -1,0 +1,29 @@
+#SignIn {
+	width: 450px;
+	margin: auto;
+	margin-top: 30vh;
+}
+
+#titleBox {
+	font-size: 40px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.inputBox {
+	width: 400px;
+	height: 45px;
+	display: block;
+	font-size: 20px;
+	margin: auto;
+
+	box-sizing: border-box;
+}
+
+.signInButton {
+	width: 400px;
+	font-size: 20px;
+	height: 45px;
+	display: block;
+	margin: auto;
+}

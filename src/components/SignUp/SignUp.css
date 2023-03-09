@@ -1,0 +1,8 @@
+#signUp {
+	display: flex;
+	justify-content: center;
+}
+
+.elementRow {
+	border: 3px solid green;
+}

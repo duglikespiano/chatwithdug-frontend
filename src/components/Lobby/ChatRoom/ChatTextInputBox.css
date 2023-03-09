@@ -1,0 +1,21 @@
+#ChatTextInputBox {
+	position: relative;
+	padding-top: 25px;
+}
+
+#chatTextInput {
+	width: 450px;
+	height: 40px;
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+	padding-left: 10px;
+	font-size: 20px;
+}
+
+#chatTextSubmitButton {
+	width: 45px;
+	height: 35px;
+	margin-bottom: -10px;
+	cursor: pointer;
+}

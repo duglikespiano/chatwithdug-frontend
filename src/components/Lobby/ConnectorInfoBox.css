@@ -1,0 +1,52 @@
+#ConnectorInfoBox {
+	width: 300px;
+	float: left;
+	font-size: 25px;
+}
+
+#infoBox {
+	margin-bottom: 10px;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 10px;
+	margin-bottom: 2px;
+}
+
+.myProfileBox {
+	position: relative;
+	background-color: rgb(0, 174, 255);
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 10px;
+	padding-left: 60px;
+	margin-bottom: 2px;
+}
+
+.profileBoxAvailable {
+	position: relative;
+	background-color: rgb(0, 255, 170);
+	cursor: pointer;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 10px;
+	padding-left: 60px;
+	margin-bottom: 2px;
+}
+
+.profileBoxChatting {
+	position: relative;
+	background-color: rgb(0, 255, 170);
+	pointer-events: none;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 10px;
+	padding-left: 60px;
+	margin-bottom: 2px;
+}
+
+.profilePicture {
+	font-size: 40px;
+	position: absolute;
+	left: 10px;
+	top: 5px;
+}

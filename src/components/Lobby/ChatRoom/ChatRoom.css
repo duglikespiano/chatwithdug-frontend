@@ -1,0 +1,16 @@
+#ChatRoom {
+	width: 496px;
+	float: right;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+#quitChatRoomButton {
+	width: 100px;
+	height: 35px;
+	margin: 0px;
+	margin-left: -25px;
+	padding: 0px;
+	font-size: 20px;
+	cursor: pointer;
+}
