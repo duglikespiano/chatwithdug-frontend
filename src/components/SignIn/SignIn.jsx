@@ -71,7 +71,7 @@ export default function SignIn() {
 				<div className="wrapper">
 					<input
 						ref={inputName}
-						className="inputBox"
+						className="signInValueInputBox"
 						placeholder="Username"
 						name="name"
 						maxLength="15"
@@ -80,27 +80,27 @@ export default function SignIn() {
 				<div className="wrapper">
 					<input
 						ref={inputPassword}
-						className="inputBox"
+						className="signInValueInputBox"
 						placeholder="Password"
 						name="password"
 						maxLength="16"
 					/>
 				</div>
 				<div className="wrapper">
-					<button className="signInButton">Sign In!</button>
+					<button id="signInButton">Sign in</button>
 				</div>
 			</form>
 			<div className="wrapper">
-				<button className="" onClick={() => {}}>
-					비밀번호 찾기!
+				<button id="passwordRecoverButton" onClick={() => {}}>
+					Forgot Password?
 				</button>
 				<button
-					className=""
+					id="signUpButton"
 					onClick={() => {
 						navigate('/signUp');
 					}}
 				>
-					SignUp!
+					Sign up
 				</button>
 			</div>
 		</div>

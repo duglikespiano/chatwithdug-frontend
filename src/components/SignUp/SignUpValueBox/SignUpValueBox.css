@@ -1,5 +1,33 @@
+.elementRow {
+	width: 400px;
+	margin: auto;
+	margin-bottom: 14px;
+}
+.valueSort {
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 4px;
+}
+
 .valueInputBox {
 	width: 400px;
 	height: 45px;
 	font-size: 20px;
+	box-sizing: border-box;
+}
+
+#emailValidateCodeInput {
+	width: 300px;
+	height: 26px;
+	box-sizing: border-box;
+}
+
+.emailValidateCodeButton {
+	width: 100px;
+	height: 26px;
+}
+
+.validateCodeSendButton {
+	width: 400px;
+	height: 26px;
 }

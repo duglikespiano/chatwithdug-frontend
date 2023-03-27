@@ -10,20 +10,33 @@
 	margin-bottom: 20px;
 }
 
-.inputBox {
+.signInValueInputBox {
 	width: 400px;
 	height: 45px;
 	display: block;
 	font-size: 20px;
 	margin: auto;
-
 	box-sizing: border-box;
 }
 
-.signInButton {
+#signInButton {
 	width: 400px;
 	font-size: 20px;
 	height: 45px;
 	display: block;
 	margin: auto;
+}
+
+#passwordRecoverButton {
+	width: 195px;
+	height: 35px;
+	font-size: 20px;
+	margin-left: 25px;
+}
+
+#signUpButton {
+	width: 195px;
+	height: 35px;
+	font-size: 20px;
+	margin-left: 10px;
 }

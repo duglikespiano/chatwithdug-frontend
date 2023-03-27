@@ -194,7 +194,9 @@ export default function SignUpForm() {
 				<SignUpValueBox sort={'password'} getData={getData} />
 				<SignUpValueBox sort={'passwordCrossCheck'} getData={getData} />
 				<SignUpValueBox sort={'email'} getData={getData} />
-				<button type="submit">제출!</button>
+				<button type="submit" id="signUpSubmitButton">
+					Sign up
+				</button>
 				{showSubmitError ? <div>뭔가 데이터 입력 잘못 됨</div> : null}
 			</form>
 		</div>
