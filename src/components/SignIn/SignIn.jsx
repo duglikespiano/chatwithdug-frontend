@@ -46,6 +46,7 @@ export default function SignIn() {
 			)
 				.then((res) => res.json())
 				.then((data) => {
+					console.log(data);
 					sessionStorage.setItem('token', data.data.token);
 					sessionStorage.setItem('name', data.data.name);
 					sessionStorage.setItem('email', data.data.email);
@@ -89,7 +90,7 @@ export default function SignIn() {
 					<button className="signInButton">Sign In!</button>
 				</div>
 			</form>
-			{/* <div className="wrapper">
+			<div className="wrapper">
 				<button className="" onClick={() => {}}>
 					비밀번호 찾기!
 				</button>
@@ -101,7 +102,7 @@ export default function SignIn() {
 				>
 					SignUp!
 				</button>
-			</div> */}
+			</div>
 		</div>
 	);
 }
