@@ -75,6 +75,9 @@ export default function Lobby() {
 	};
 
 	useEffect(() => {
+		if (!sessionStorage.getItem('token')) {
+			navigate('/');
+		}
 		// 본 페이지에 진입 시, 로그인으로 획득한 token을 backend로 전달하여 userName 확보
 		wsClient.emit('joinlobby', sessionStorage.getItem('token'));
 		wsClient.on('chatContents', (data) => {
@@ -125,7 +128,7 @@ export default function Lobby() {
 			// 사용자가 lobby에서 뒤로가기 버튼을 누를 때, 현재 lobby에 접속한 모든 사용자 정보를 갱신
 			wsClient.emit('backButton');
 		};
-	}, []);
+	}, [navigate]);
 
 	// 사용자가 초대를 받으면 선택창이 뜨고,
 	// '확인'선택 시  inviteAccepted event 발생 및 채팅창으로 화면 전환
@@ -165,6 +168,7 @@ export default function Lobby() {
 				setLeave(false);
 				// 초대를 받고 수락한 사람의 화면 전환
 				setChatContents([]);
+				// sessionStorage.setItem('status', 'chatting');
 				navigate('/lobby/chatroom');
 			} else {
 				wsClient.emit('status', myInfo.userSocketId, false);
@@ -192,6 +196,7 @@ export default function Lobby() {
 			setLeave(false);
 			wsClient.emit('status', myInfo.userSocketId, true);
 			setChatContents([]);
+			// sessionStorage.setItem('status', 'chatting');
 			navigate('/lobby/chatroom');
 		}
 	});
