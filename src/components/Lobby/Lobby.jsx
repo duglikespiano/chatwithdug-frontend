@@ -75,9 +75,6 @@ export default function Lobby() {
 	};
 
 	useEffect(() => {
-		if (!sessionStorage.getItem('token')) {
-			navigate('/');
-		}
 		// 본 페이지에 진입 시, 로그인으로 획득한 token을 backend로 전달하여 userName 확보
 		wsClient.emit('joinlobby', sessionStorage.getItem('token'));
 		wsClient.on('chatContents', (data) => {
@@ -128,63 +125,32 @@ export default function Lobby() {
 			// 사용자가 lobby에서 뒤로가기 버튼을 누를 때, 현재 lobby에 접속한 모든 사용자 정보를 갱신
 			wsClient.emit('backButton');
 		};
-	}, [navigate]);
+	}, []);
 
-	// 사용자가 초대를 받으면 선택창이 뜨고,
-	// '확인'선택 시  inviteAccepted event 발생 및 채팅창으로 화면 전환
-	wsClient.on('invite', (inviter, invitee, inviteeName) => {
-		wsClient.emit('status', myInfo.userSocketId, true);
-		const toData = connector.filter((item) => item.userSocketId === inviter)[0];
-		setYourInfo((yourInfo) => ({
-			...yourInfo,
-			userName: toData?.userName,
-			userSocketId: toData?.userSocketId,
-			status: toData?.status,
-		}));
-		let timerInterval;
-		Swal.fire({
-			title: 'Would you like to join?',
-			text: `${inviteeName} has invited you!`,
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Accept',
-			cancelButtonText: 'Deny',
-			timer: 10000,
-			timerProgressBar: true,
-			didOpen: () => {
-				// Swal.showLoading();
-				timerInterval = setInterval(() => {}, 100);
-			},
-			willClose: () => {
-				clearInterval(timerInterval);
-			},
-		}).then((result) => {
-			if (result.isConfirmed) {
-				// inviteAccepted event 발생 시 초대 한 사람과 초대 받은 사람의 socketId를 전달
-				wsClient.emit('inviteAccepted', inviter, invitee);
-				// 채팅창 leave상태 초기화
-				setLeave(false);
-				// 초대를 받고 수락한 사람의 화면 전환
-				setChatContents([]);
-				// sessionStorage.setItem('status', 'chatting');
-				navigate('/lobby/chatroom');
-			} else {
-				wsClient.emit('status', myInfo.userSocketId, false);
-				wsClient.emit('inviteDenied', toData.userSocketId, false);
+	useEffect(() => {
+		if (!sessionStorage.getItem('token')) {
+			navigate('/');
+		}
+
+		let time = new Date();
+		wsClient.on('typing', (msg) => {
+			setTyping(true);
+			const timeout = () => {
+				setTyping(false);
+			};
+			const id = setTimeout(timeout, 1000);
+			if (new Date() - time > -1) {
+				time = new Date();
+				clearTimeout(id - 1);
 			}
 		});
-	});
 
-	// 초대를 한 사람이 상대방이 초대를 수락했다는 메세지를 받을 경우,
-	// TODO 방제 공유 event만들어야 함 -> 논리에서 넣을 곳 찾아볼 것
-	// TODO 방제를 고정시켜서 inviter, invitee가 동일하게 자료를 받을 필요가 있음 -> 어느 시점에 만들지 확인 할 것
-	// TODO 방제 state를 한 개 더 만들어서 서로 공유하자 -> frontend에서 처리 할 것
-	wsClient.on('inviteAccepted', (message, toWsId) => {
-		if (message === true) {
+		// 사용자가 초대를 받으면 선택창이 뜨고,
+		// '확인'선택 시  inviteAccepted event 발생 및 채팅창으로 화면 전환
+		wsClient.on('invite', (inviter, invitee, inviteeName) => {
+			wsClient.emit('status', myInfo.userSocketId, true);
 			const toData = connector.filter(
-				(item) => item.userSocketId === toWsId
+				(item) => item.userSocketId === inviter
 			)[0];
 			setYourInfo((yourInfo) => ({
 				...yourInfo,
@@ -192,14 +158,66 @@ export default function Lobby() {
 				userSocketId: toData?.userSocketId,
 				status: toData?.status,
 			}));
-			// 채팅창 leave상태 초기화
-			setLeave(false);
-			wsClient.emit('status', myInfo.userSocketId, true);
-			setChatContents([]);
-			// sessionStorage.setItem('status', 'chatting');
-			navigate('/lobby/chatroom');
-		}
-	});
+			let timerInterval;
+			Swal.fire({
+				title: 'Would you like to join?',
+				text: `${inviteeName} has invited you!`,
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Accept',
+				cancelButtonText: 'Deny',
+				timer: 10000,
+				timerProgressBar: true,
+				didOpen: () => {
+					// Swal.showLoading();
+					timerInterval = setInterval(() => {}, 100);
+				},
+				willClose: () => {
+					clearInterval(timerInterval);
+				},
+			}).then((result) => {
+				if (result.isConfirmed) {
+					// inviteAccepted event 발생 시 초대 한 사람과 초대 받은 사람의 socketId를 전달
+					wsClient.emit('inviteAccepted', inviter, invitee);
+					// 채팅창 leave상태 초기화
+					setLeave(false);
+					// 초대를 받고 수락한 사람의 화면 전환
+					setChatContents([]);
+					// sessionStorage.setItem('status', 'chatting');
+					navigate('/lobby/chatroom');
+				} else {
+					wsClient.emit('status', myInfo.userSocketId, false);
+					wsClient.emit('inviteDenied', toData.userSocketId, false);
+				}
+			});
+		});
+
+		// 초대를 한 사람이 상대방이 초대를 수락했다는 메세지를 받을 경우,
+		// TODO 방제 공유 event만들어야 함 -> 논리에서 넣을 곳 찾아볼 것
+		// TODO 방제를 고정시켜서 inviter, invitee가 동일하게 자료를 받을 필요가 있음 -> 어느 시점에 만들지 확인 할 것
+		// TODO 방제 state를 한 개 더 만들어서 서로 공유하자 -> frontend에서 처리 할 것
+		wsClient.on('inviteAccepted', (message, toWsId) => {
+			if (message === true) {
+				const toData = connector.filter(
+					(item) => item.userSocketId === toWsId
+				)[0];
+				setYourInfo((yourInfo) => ({
+					...yourInfo,
+					userName: toData?.userName,
+					userSocketId: toData?.userSocketId,
+					status: toData?.status,
+				}));
+				// 채팅창 leave상태 초기화
+				setLeave(false);
+				wsClient.emit('status', myInfo.userSocketId, true);
+				setChatContents([]);
+				// sessionStorage.setItem('status', 'chatting');
+				navigate('/lobby/chatroom');
+			}
+		});
+	}, [navigate, connector, myInfo.userSocketId]);
 
 	wsClient.on('inviteDenied', (boolean) => {
 		if (boolean === false) {
