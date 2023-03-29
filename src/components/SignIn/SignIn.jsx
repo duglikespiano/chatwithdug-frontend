@@ -97,7 +97,7 @@ export default function SignIn() {
 				<button
 					id="signUpButton"
 					onClick={() => {
-						navigate('/signUp');
+						// navigate('/signup');
 					}}
 				>
 					Sign up
