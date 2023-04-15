@@ -23,44 +23,61 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 				{myInfo.userName} (You)
 			</div>
 
-			{exceptMeInfo?.map((item, i) => (
-				<div
-					key={i}
-					className={item.status ? 'profileBoxChatting' : 'profileBoxAvailable'}
-					onClick={(event) => {
-						event.preventDefault();
-						let timerInterval;
-						Swal.fire({
-							title: `You've invited ${exceptMeInfo[i].userName}`,
-							icon: 'success',
-							showConfirmButton: true,
-							timer: 3000,
-							timerProgressBar: true,
-							didOpen: () => {
-								timerInterval = setInterval(() => {}, 100);
-							},
-							willClose: () => {
-								clearInterval(timerInterval);
-							},
-						});
-						callSocket(
-							'invite',
-							myInfo.userSocketId,
-							exceptMeInfo[i].userSocketId,
-							// exceptMeInfo[i].userName
-							myInfo.userName
-						);
-					}}
-				>
-					<div>
-						<CgProfile className="profilePicture" />
-						{item.userName}
-					</div>
-					{/* <div>username : {item.userName}</div> */}
-					{/* <div>socektId : {item.userSocketId}</div> */}
-					{item.status ? <NoticeChatting /> : null}
+			{connector[
+				connector.findIndex((item) => item.userSocketId === myInfo.userSocketId)
+			].status ? (
+				<div>
+					{exceptMeInfo?.map((item, i) => (
+						<div key={i} className="profileBoxChatting">
+							<div>
+								<CgProfile className="profilePicture" />
+								{item.userName}
+							</div>
+							{item.status ? <NoticeChatting /> : null}
+						</div>
+					))}
 				</div>
-			))}
+			) : (
+				<div>
+					{exceptMeInfo?.map((item, i) => (
+						<div
+							key={i}
+							className={
+								item.status ? 'profileBoxChatting' : 'profileBoxAvailable'
+							}
+							onClick={(event) => {
+								event.preventDefault();
+								let timerInterval;
+								Swal.fire({
+									title: `You've invited ${exceptMeInfo[i].userName}`,
+									icon: 'success',
+									showConfirmButton: true,
+									timer: 3000,
+									timerProgressBar: true,
+									didOpen: () => {
+										timerInterval = setInterval(() => {}, 100);
+									},
+									willClose: () => {
+										clearInterval(timerInterval);
+									},
+								});
+								callSocket(
+									'invite',
+									myInfo.userSocketId,
+									exceptMeInfo[i].userSocketId,
+									myInfo.userName
+								);
+							}}
+						>
+							<div>
+								<CgProfile className="profilePicture" />
+								{item.userName}
+							</div>
+							{item.status ? <NoticeChatting /> : null}
+						</div>
+					))}
+				</div>
+			)}
 		</div>
 	);
 }
