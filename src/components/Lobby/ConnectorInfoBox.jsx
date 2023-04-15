@@ -47,7 +47,8 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 							'invite',
 							myInfo.userSocketId,
 							exceptMeInfo[i].userSocketId,
-							exceptMeInfo[i].userName
+							// exceptMeInfo[i].userName
+							myInfo.userName
 						);
 					}}
 				>

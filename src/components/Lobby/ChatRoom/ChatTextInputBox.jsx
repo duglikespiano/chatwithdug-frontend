@@ -12,8 +12,19 @@ export default function ChatTextInputBox({
 	typing,
 }) {
 	const chatTextInputBox = useRef();
+	const keyCheck = (event) => {
+		if (event.key === 'Enter') {
+			if (event.nativeEvent.isComposing === false) {
+				handleSubmit(event);
+			}
+		}
+		if (event.key === 'Escape') {
+			console.log('여기 두번 뜨나? esc');
+			if (event.nativeEvent.isComposing === false) {
+			}
+		}
+	};
 	const handleSubmit = (event) => {
-		event.preventDefault();
 		callSocket(
 			'chatContents',
 			myInfo.userName,
@@ -34,20 +45,18 @@ export default function ChatTextInputBox({
 		<div id="ChatTextInputBox">
 			<div>
 				<NoticeChatTyping yourInfo={yourInfo} typing={typing} />
-				<form onSubmit={handleSubmit}>
-					<label htmlFor="chatText"></label>
-					<input
-						type="text"
-						id="chatTextInput"
-						name="chatText"
-						maxLength="200"
-						ref={chatTextInputBox}
-						placeholder="type your message here.."
-						disabled={leave}
-						onChange={handleChatTyping}
-					></input>
-					<RiSendPlane2Fill id="chatTextSubmitButton" />
-				</form>
+				<input
+					type="text"
+					id="chatTextInput"
+					name="chatText"
+					maxLength="200"
+					ref={chatTextInputBox}
+					placeholder="type your message here.."
+					disabled={leave}
+					onKeyDown={keyCheck}
+					onChange={handleChatTyping}
+				></input>
+				<RiSendPlane2Fill id="chatTextSubmitButton" onClick={handleSubmit} />
 			</div>
 		</div>
 	);
