@@ -89,9 +89,9 @@ export default function Lobby() {
 			)[0];
 			setMyInfo((myInfo) => ({
 				...myInfo,
-				userName: myData.userName,
-				userSocketId: myData.userSocketId,
-				status: myData.status,
+				userName: myData?.userName,
+				userSocketId: myData?.userSocketId,
+				status: myData?.status,
 			}));
 		});
 

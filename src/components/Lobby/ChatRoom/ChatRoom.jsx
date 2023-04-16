@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { RiDeleteBin4Fill } from 'react-icons/ri';
+import { ImExit } from 'react-icons/im';
 import Swal from 'sweetalert2';
 import ChatTextInputBox from './ChatTextInputBox.jsx';
 import ChatContentsBox from './ChatContentsBox.jsx';
@@ -24,12 +24,12 @@ export default function ChatRoom() {
 	const quitChatRoom = () => {
 		Swal.fire({
 			title: 'Want to leave?',
-			text: 'You chat contents will be disappeared!',
+			text: 'You will lost chat contents!',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, delete it!',
+			confirmButtonText: 'Leave',
 		}).then((result) => {
 			if (result.isConfirmed) {
 				callSocket(
@@ -60,28 +60,7 @@ export default function ChatRoom() {
 	useEffect(() => {
 		const preventBack = () => {
 			history.push('/lobby/chatroom');
-			Swal.fire({
-				title: 'Want to leave?',
-				text: 'You chat contents will be disappeared!',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!',
-			}).then((result) => {
-				if (result.isConfirmed) {
-					callSocket(
-						'leaveRoomNotification',
-						myInfo.userSocketId,
-						yourInfo.userSocketId,
-						`${myInfo.userSocketId} has left from ${roomNumber}`
-					);
-					navigate('/lobby');
-					leaveHandler();
-					callSocket('status', myInfo.userSocketId, false);
-					roomNumberHandler();
-				}
-			});
+			quitChatRoom();
 		};
 
 		const unlistenHistoryEvent = history.listen(({ action }) => {
@@ -94,7 +73,7 @@ export default function ChatRoom() {
 
 	return (
 		<div id="ChatRoom">
-			<RiDeleteBin4Fill id="quitChatRoomButton" onClick={quitChatRoom} />
+			<ImExit id="quitChatRoomButton" onClick={quitChatRoom} />
 			<ChatContentsBox
 				chatContents={chatContents}
 				myInfo={myInfo}

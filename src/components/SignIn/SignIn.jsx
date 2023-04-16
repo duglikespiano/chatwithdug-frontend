@@ -46,7 +46,6 @@ export default function SignIn() {
 			)
 				.then((res) => res.json())
 				.then((data) => {
-					console.log(data);
 					sessionStorage.setItem('token', data.data.token);
 					sessionStorage.setItem('name', data.data.name);
 					sessionStorage.setItem('email', data.data.email);
@@ -97,7 +96,7 @@ export default function SignIn() {
 				<button
 					id="signUpButton"
 					onClick={() => {
-						// navigate('/signup');
+						navigate('/signup');
 					}}
 				>
 					Sign up

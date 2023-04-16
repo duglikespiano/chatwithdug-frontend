@@ -25,7 +25,7 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 
 			{connector[
 				connector.findIndex((item) => item.userSocketId === myInfo.userSocketId)
-			].status ? (
+			]?.status ? (
 				<div>
 					{exceptMeInfo?.map((item, i) => (
 						<div key={i} className="profileBoxChatting">

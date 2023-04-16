@@ -44,12 +44,12 @@ export default function SignUpForm() {
 	const preventBack = () => {
 		Swal.fire({
 			title: 'Want to leave?',
-			text: "Values you've input will lost!",
+			text: 'You will lose input values!',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, want to leave!',
+			confirmButtonText: 'Leave',
 		}).then((result) => {
 			if (result.isConfirmed) {
 				navigate('/');
