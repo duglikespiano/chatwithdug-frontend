@@ -91,16 +91,16 @@ export default function SignUpForm() {
 		try {
 			// 이름, 비밀번호, email이 정규식에 부합하는지 검사
 			if (checkRegexTest(values) === 'somethingWrong') {
-				const error = new Error('정규식 위반');
+				const error = new Error('INVALID FOR REGEX');
 				throw error;
 			} else if (values.password !== values.passwordCrossCheck) {
-				const error = new Error('비밀번호 일치하지않음');
+				const error = new Error('PASSWORDS NO MATCH');
 				throw error;
 			} else if (
 				values.emailConfirm === false ||
 				values.emailConfirm === undefined
 			) {
-				const error = new Error('이메일 부적합');
+				const error = new Error('INVALID EMAIL');
 				throw error;
 			}
 
@@ -146,7 +146,6 @@ export default function SignUpForm() {
 					);
 				})
 				.then((res) => res.json())
-				.then((data) => console.log(data))
 				// --------------서버에서 제대로 저장했다는 응답 있을 시 alert창 띄우기-------------- //
 				.then(() => {
 					return Swal.fire({
@@ -165,12 +164,22 @@ export default function SignUpForm() {
 					// 관련 componenet 출력
 					console.error(error);
 					handleShowSubmitError();
+					Swal.fire({
+						title: 'Error!',
+						text: 'Please contant to Dug!',
+						icon: 'error',
+					});
 				});
 		} catch (error) {
 			// 에러 발생 시, 사용자가 입력한 값들의 유효성 만족여부를 확인 및 저장하는 state를 false로 변경
 			// 관련 componenet 출력
 			console.error(error);
 			handleShowSubmitError();
+			Swal.fire({
+				title: 'Error!',
+				text: 'Please contant to Dug!',
+				icon: 'error',
+			});
 		}
 	};
 

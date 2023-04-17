@@ -129,6 +129,26 @@ export default function Lobby() {
 	}, []);
 
 	useEffect(() => {
+		wsClient.on('kick', (message) => {
+			if (message === false) {
+				navigate('/');
+				let timerInterval;
+				Swal.fire({
+					title: `Your Account is already being used`,
+					icon: 'error',
+					showConfirmButton: true,
+					timer: 1500,
+					timerProgressBar: true,
+					didOpen: () => {
+						timerInterval = setInterval(() => {}, 100);
+					},
+					willClose: () => {
+						clearInterval(timerInterval);
+					},
+				});
+			}
+		});
+
 		if (!sessionStorage.getItem('token')) {
 			navigate('/');
 		}

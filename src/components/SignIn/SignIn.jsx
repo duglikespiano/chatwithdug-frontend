@@ -31,7 +31,7 @@ export default function SignIn() {
 		};
 		try {
 			if (checkRegexTest(fetchData) === 'somethingWrong') {
-				const error = new Error('정규식 위반');
+				const error = new Error('INVALID FOR REGEX');
 				throw error;
 			}
 			fetch(
@@ -51,11 +51,27 @@ export default function SignIn() {
 					sessionStorage.setItem('email', data.data.email);
 				})
 				.then(() => {
-					navigate('/lobby');
+					return fetch(
+						`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/connectCheck`,
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(fetchData),
+						}
+					);
 				})
-				.catch((error) => {
-					console.error(error);
-					Swal.fire('Invalid Input', 'Please Check Input Values', 'warning');
+				.then((res) => res.json())
+				.then((data) => {
+					if (data.message === 'ALREADY CONNECTED BY THE USERNAME') {
+						const error = new Error('Connection Error');
+						Swal.fire('Already Connected', 'Please Contact Dug!', 'warning');
+						throw error;
+					}
+				})
+				.then(() => {
+					navigate('/lobby');
 				});
 		} catch (error) {
 			console.error(error);

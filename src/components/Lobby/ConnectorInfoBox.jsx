@@ -66,6 +66,7 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 								<CgProfile className="profilePicture" />
 								{item.userName}
 							</div>
+
 							{item.status ? <NoticeChatting /> : null}
 						</div>
 					))}
