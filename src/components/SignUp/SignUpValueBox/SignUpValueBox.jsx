@@ -163,7 +163,7 @@ export default function SignUpValueBox({ sort, getData }) {
 		)
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 				if (data.data.length === 0) {
 					setCheckDataExists((checkDataExists) => (checkDataExists = false));
 				} else {

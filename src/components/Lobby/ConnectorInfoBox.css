@@ -16,7 +16,7 @@
 	margin-bottom: 2px;
 }
 
-.myProfileBox {
+#myProfileBox {
 	position: relative;
 	background-color: rgb(0, 174, 255);
 	border: 2px solid black;
@@ -24,7 +24,7 @@
 	padding: 10px;
 	padding-left: 60px;
 	margin-bottom: 2px;
-	pointer-events: none;
+	cursor: default;
 }
 
 .profileBoxAvailable {
@@ -49,9 +49,22 @@
 	margin-bottom: 2px;
 }
 
+#myProfilePicture {
+	font-size: 40px;
+	position: absolute;
+	left: 10px;
+	top: 5px;
+}
+
 .profilePicture {
 	font-size: 40px;
 	position: absolute;
 	left: 10px;
 	top: 5px;
+}
+
+#signOut {
+	text-align: right;
+	font-size: 15px;
+	cursor: pointer;
 }

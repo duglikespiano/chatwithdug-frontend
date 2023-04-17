@@ -27,8 +27,8 @@ export default function ChatContentsBox({
 								: 'yourChats'
 						}
 					>
-						<div>{item.fromUserName}</div>
-						<div>{item.text}</div>
+						<div className="name">{item.fromUserName}</div>
+						<div className="chatContents">{item.text}</div>
 					</div>
 				);
 			})}

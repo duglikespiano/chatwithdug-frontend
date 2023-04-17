@@ -1,12 +1,12 @@
 #signUp {
 	width: 450px;
 	margin: auto;
-	margin-top: 30vh;
+	margin-top: 20vh;
 	/* border: 3px solid blue; */
 }
 
 #signUpSubmitButton {
-	width: 300px;
+	width: 400px;
 	height: 40px;
 	margin: auto;
 	display: block;

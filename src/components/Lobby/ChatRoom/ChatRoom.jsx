@@ -52,10 +52,13 @@ export default function ChatRoom() {
 		if (myInfo.userSocketId && !yourInfo.userSocketId && !roomNumber) {
 			navigate('/lobby');
 		}
+	}, [navigate, roomNumber, myInfo.userSocketId, yourInfo.userSocketId]);
+
+	useEffect(() => {
 		return () => {
 			sessionStorage.removeItem('roomNumber');
 		};
-	}, [navigate, roomNumber, myInfo.userSocketId, yourInfo.userSocketId]);
+	}, []);
 
 	useEffect(() => {
 		const preventBack = () => {

@@ -113,7 +113,7 @@ export default function SignUpForm() {
 				})
 				.then((data) => {
 					if (data?.data.length === 1) {
-						throw new Error('중복이다 자슥아');
+						throw new Error('DATA ALREADY EXISTS(NAME)');
 					}
 					return values.email;
 				})
@@ -128,7 +128,7 @@ export default function SignUpForm() {
 				})
 				.then((data) => {
 					if (data?.data.length === 1) {
-						throw new Error('중복이다 자슥아');
+						throw new Error('DATA ALREADY EXISTS(EMAIL)');
 					}
 					return fetchData;
 				})
@@ -148,22 +148,22 @@ export default function SignUpForm() {
 				.then((res) => res.json())
 				.then((data) => console.log(data))
 				// --------------서버에서 제대로 저장했다는 응답 있을 시 alert창 띄우기-------------- //
-				// .then(() => {
-				// 	return Swal.fire({
-				// 		title: 'Signed up!',
-				// 		text: 'Hit the OK button to login',
-				// 		icon: 'success',
-				// 	});
-				// })
-				// .then((data) => {
-				// 	if (data.isConfirmed === true) {
-				// 		navigate('/');
-				// 	}
-				// })
+				.then(() => {
+					return Swal.fire({
+						title: 'Signed up!',
+						text: 'Hit the OK button to login',
+						icon: 'success',
+					});
+				})
+				.then((data) => {
+					if (data.isConfirmed === true) {
+						navigate('/');
+					}
+				})
 				.catch((error) => {
 					// 에러 발생 시, 사용자가 입력한 값들의 유효성 만족여부를 확인 및 저장하는 state를 false로 변경
 					// 관련 componenet 출력
-					console.log(error);
+					console.error(error);
 					handleShowSubmitError();
 				});
 		} catch (error) {
@@ -189,6 +189,7 @@ export default function SignUpForm() {
 
 	return (
 		<div id="signUp">
+			<div id="titleBox">Chat With Dug</div>
 			<form onSubmit={handleSubmit} id="signUpForm">
 				<SignUpValueBox sort={'name'} getData={getData} />
 				<SignUpValueBox sort={'password'} getData={getData} />

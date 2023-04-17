@@ -102,6 +102,7 @@ export default function Lobby() {
 		wsClient.on('roomNumber', (roomNumber) => {
 			setRoomNumber(roomNumber);
 			wsClient.emit('joinChatRoom', roomNumber);
+			sessionStorage.setItem('roomNumber', roomNumber);
 		});
 
 		wsClient.on('leaveRoomNotification', (element1, element2) => {
@@ -213,7 +214,6 @@ export default function Lobby() {
 				setLeave(false);
 				wsClient.emit('status', myInfo.userSocketId, true);
 				setChatContents([]);
-				// sessionStorage.setItem('status', 'chatting');
 				navigate('/lobby/chatroom');
 			}
 		});

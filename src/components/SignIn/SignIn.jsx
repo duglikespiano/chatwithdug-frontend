@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './SignIn.css';
@@ -62,6 +62,10 @@ export default function SignIn() {
 			Swal.fire('Invalid Input', 'Please Check Input Values', 'warning');
 		}
 	};
+
+	useEffect(() => {
+		sessionStorage.clear();
+	}, []);
 
 	return (
 		<div id="SignIn">

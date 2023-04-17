@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { CgProfile } from 'react-icons/cg';
 import { callSocket } from '../Lobby/Lobby.jsx';
@@ -7,6 +8,35 @@ import './ConnectorInfoBox.css';
 
 export default function ConnectorInfoBox({ connector, myInfo }) {
 	const [exceptMeInfo, setExceptMeInfo] = useState([]);
+	const navigate = useNavigate();
+
+	const signOut = () => {
+		let timerInterval;
+		Swal.fire({
+			title: 'Would you like to sign out?',
+			//text: 'You will move to main page by accept',
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Accept',
+			cancelButtonText: 'Deny',
+			timer: 10000,
+			timerProgressBar: true,
+			didOpen: () => {
+				timerInterval = setInterval(() => {}, 100);
+			},
+			willClose: () => {
+				clearInterval(timerInterval);
+			},
+		}).then((result) => {
+			if (result.isConfirmed) {
+				navigate('/');
+			} else {
+				return;
+			}
+		});
+	};
 
 	useEffect(() => {
 		setExceptMeInfo((exceptMeInfo) =>
@@ -18,9 +48,12 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 		<div id="ConnectorInfoBox">
 			<div id="greetingBox">Welcome, {myInfo.userName}!~♫</div>
 			<div id="infoBox">Online users</div>
-			<div className="myProfileBox">
-				<CgProfile className="profilePicture" />
-				{myInfo.userName} (You)
+			<div id="myProfileBox">
+				<CgProfile id="myProfilePicture" />
+				<div>{myInfo.userName} (You)</div>
+				<div id="signOut" onClick={signOut}>
+					Click here to sign out
+				</div>
 			</div>
 
 			{connector[

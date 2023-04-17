@@ -6,11 +6,10 @@
 }
 
 #quitChatRoomButton {
-	width: 100px;
+	width: 35px;
 	height: 35px;
 	margin-top: 5px;
-	margin-left: -27px;
-	padding: 0px;
+	margin-left: 5px;
 	font-size: 20px;
 	cursor: pointer;
 }

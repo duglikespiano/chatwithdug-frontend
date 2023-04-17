@@ -78,16 +78,16 @@ export default function Introduction() {
 			<h4>
 				BackEnd :<br />
 				<img
+					src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white"
+					alt="iconJavascript"
+				/>
+				<img
 					src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=white"
 					alt="iconNodeJs"
 				/>
 				<img
 					src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white"
 					alt="iconExpress"
-				/>
-				<img
-					src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white"
-					alt="iconJavascript"
 				/>
 				<img
 					src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"
@@ -101,12 +101,12 @@ export default function Introduction() {
 					alt="iconSocket.io"
 				/>
 				<img
-					src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"
-					alt="iconPostman"
-				/>
-				<img
 					src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white"
 					alt="iconGit"
+				/>
+				<img
+					src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"
+					alt="iconPostman"
 				/>
 			</h4>
 			<div />

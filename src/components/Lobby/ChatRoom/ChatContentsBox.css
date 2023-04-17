@@ -6,11 +6,18 @@
 .myChats {
 	text-align: right;
 	font-size: 25px;
-	/* background-color: rgb(255, 229, 82); */
 }
 
 .yourChats {
 	text-align: left;
 	font-size: 25px;
-	/* background-color: #28e968; */
+}
+
+.name {
+	font-size: 70%;
+	font-weight: bold;
+}
+
+.chatContents {
+	margin-bottom: 3px;
 }
