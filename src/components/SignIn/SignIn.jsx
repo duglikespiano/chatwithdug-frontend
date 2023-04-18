@@ -98,6 +98,7 @@ export default function SignIn() {
 				</div>
 				<div className="wrapper">
 					<input
+						type="password"
 						ref={inputPassword}
 						className="signInValueInputBox"
 						placeholder="Password"
@@ -110,7 +111,12 @@ export default function SignIn() {
 				</div>
 			</form>
 			<div className="wrapper">
-				<button id="passwordRecoverButton" onClick={() => {}}>
+				<button
+					id="passwordRecoverButton"
+					onClick={() => {
+						navigate('/resetpassword');
+					}}
+				>
 					Forgot Password?
 				</button>
 				<button

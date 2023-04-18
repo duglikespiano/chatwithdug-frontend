@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history';
 import './index.css';
 import SignIn from './components/SignIn/SignIn.jsx';
 import SignUp from './components/SignUp/SignUp.jsx';
+import ResetPassword from './components/ResetPassword/ResetPassword.jsx';
 import Lobby from './components/Lobby/Lobby.jsx';
 import reportWebVitals from './reportWebVitals';
 import ChatRoom from './components/Lobby/ChatRoom/ChatRoom';
@@ -20,10 +21,10 @@ const router = createBrowserRouter([
 		errorElement: <p>NOT FOUND!</p>,
 	},
 	{ path: '/signup', element: <SignUp /> },
+	{ path: '/resetpassword', element: <ResetPassword /> },
 	{
 		path: '/lobby',
 		element: <Lobby />,
-		// exact: true,
 		children: [
 			{ index: true, element: <Introduction /> },
 			{ path: '/lobby/chatroom', element: <ChatRoom /> },

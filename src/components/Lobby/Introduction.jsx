@@ -1,23 +1,19 @@
 import { RiMailLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
+import notificationExample from '../../images/notificationExample.png';
 import './Introduction.css';
 
 export default function Introduction() {
 	const fetchTestRequestMail = () => {
-		let timerInterval;
 		Swal.fire({
-			title: `You've sent notification mail!`,
-			icon: 'success',
-			showConfirmButton: true,
-			timer: 1500,
-			timerProgressBar: true,
-			didOpen: () => {
-				timerInterval = setInterval(() => {}, 100);
-			},
-			willClose: () => {
-				clearInterval(timerInterval);
-			},
+			title: 'You have sent notification mail!',
+			text: 'The above image is an expample that Dug recieves.',
+			imageUrl: notificationExample,
+			imageWidth: 1200,
+			imageHeight: 200,
+			imageAlt: 'notificationExample',
 		});
+
 		const data = {
 			name: sessionStorage.getItem('name'),
 			email: sessionStorage.getItem('email'),
@@ -39,14 +35,6 @@ export default function Introduction() {
 					icon: 'error',
 					text: 'Please contact with dug!',
 					showConfirmButton: true,
-					timer: 1500,
-					timerProgressBar: true,
-					didOpen: () => {
-						timerInterval = setInterval(() => {}, 100);
-					},
-					willClose: () => {
-						clearInterval(timerInterval);
-					},
 				});
 			}
 		});
@@ -118,7 +106,7 @@ export default function Introduction() {
 				<RiMailLine id="mailImage" onClick={fetchTestRequestMail} />
 			</h4>
 			<h4>Dug will get notification and come fly to be with you.</h4>
-			<h4>Please enjoy your time. </h4>
+			<h4>Please enjoy your time~♫ </h4>
 		</div>
 	);
 }

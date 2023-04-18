@@ -132,19 +132,11 @@ export default function Lobby() {
 		wsClient.on('kick', (message) => {
 			if (message === false) {
 				navigate('/');
-				let timerInterval;
+
 				Swal.fire({
 					title: `Your Account is already being used`,
 					icon: 'error',
 					showConfirmButton: true,
-					timer: 1500,
-					timerProgressBar: true,
-					didOpen: () => {
-						timerInterval = setInterval(() => {}, 100);
-					},
-					willClose: () => {
-						clearInterval(timerInterval);
-					},
 				});
 			}
 		});
@@ -192,7 +184,6 @@ export default function Lobby() {
 				timer: 10000,
 				timerProgressBar: true,
 				didOpen: () => {
-					// Swal.showLoading();
 					timerInterval = setInterval(() => {}, 100);
 				},
 				willClose: () => {
@@ -241,19 +232,10 @@ export default function Lobby() {
 
 	wsClient.on('inviteDenied', (boolean) => {
 		if (boolean === false) {
-			let timerInterval;
 			Swal.fire({
 				title: 'Oops!',
 				text: `Your invitation was denied`,
 				icon: 'error',
-				timer: 3000,
-				timerProgressBar: true,
-				didOpen: () => {
-					timerInterval = setInterval(() => {}, 100);
-				},
-				willClose: () => {
-					clearInterval(timerInterval);
-				},
 			});
 		}
 	});

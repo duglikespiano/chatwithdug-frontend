@@ -11,24 +11,14 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 	const navigate = useNavigate();
 
 	const signOut = () => {
-		let timerInterval;
 		Swal.fire({
 			title: 'Would you like to sign out?',
-			//text: 'You will move to main page by accept',
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
 			confirmButtonText: 'Accept',
-			cancelButtonText: 'Deny',
-			timer: 10000,
-			timerProgressBar: true,
-			didOpen: () => {
-				timerInterval = setInterval(() => {}, 100);
-			},
-			willClose: () => {
-				clearInterval(timerInterval);
-			},
+			cancelButtonText: 'Cancel',
 		}).then((result) => {
 			if (result.isConfirmed) {
 				navigate('/');
@@ -81,19 +71,11 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 							}
 							onClick={(event) => {
 								event.preventDefault();
-								let timerInterval;
+
 								Swal.fire({
 									title: `You've invited ${exceptMeInfo[i].userName}`,
 									icon: 'success',
 									showConfirmButton: true,
-									timer: 3000,
-									timerProgressBar: true,
-									didOpen: () => {
-										timerInterval = setInterval(() => {}, 100);
-									},
-									willClose: () => {
-										clearInterval(timerInterval);
-									},
 								});
 								callSocket(
 									'invite',

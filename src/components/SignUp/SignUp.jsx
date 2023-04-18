@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
 import SignUpValueBox from './SignUpValueBox/SignUpValueBox.jsx';
 import Swal from 'sweetalert2';
+import NoticeSignUpDataError from './SignUpValueBox/Notice/NoticeSignUpDataError.jsx';
 
 export default function SignUpForm() {
 	//------------------------------ regex ------------------------------//
@@ -44,7 +45,7 @@ export default function SignUpForm() {
 	const preventBack = () => {
 		Swal.fire({
 			title: 'Want to leave?',
-			text: 'You will lose input values!',
+			text: 'You will lose data!',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
@@ -73,9 +74,7 @@ export default function SignUpForm() {
 	// 사용자가 입력한 값들의 유효성 만족여부를 확인 및 저장하는 state의 handler
 	// 사용자가 입력한 값들이 유효하지 않다면 유효성 불충족 component를 출력
 	const handleShowSubmitError = () => {
-		setShowSubmitError(
-			(showSubmitError) => (showSubmitError = !showSubmitError)
-		);
+		setShowSubmitError((showSubmitError) => true);
 	};
 
 	// 사용자가 입력한 값들이 유효한지 검사하는 handler
@@ -148,16 +147,14 @@ export default function SignUpForm() {
 				.then((res) => res.json())
 				// --------------서버에서 제대로 저장했다는 응답 있을 시 alert창 띄우기-------------- //
 				.then(() => {
-					return Swal.fire({
+					Swal.fire({
 						title: 'Signed up!',
-						text: 'Hit the OK button to login',
+						text: 'Hit the OK button to sign in',
 						icon: 'success',
 					});
 				})
-				.then((data) => {
-					if (data.isConfirmed === true) {
-						navigate('/');
-					}
+				.then(() => {
+					navigate('/');
 				})
 				.catch((error) => {
 					// 에러 발생 시, 사용자가 입력한 값들의 유효성 만족여부를 확인 및 저장하는 state를 false로 변경
@@ -207,7 +204,7 @@ export default function SignUpForm() {
 				<button type="submit" id="signUpSubmitButton">
 					Sign up
 				</button>
-				{showSubmitError ? <div>뭔가 데이터 입력 잘못 됨</div> : null}
+				{showSubmitError ? <NoticeSignUpDataError /> : null}
 			</form>
 		</div>
 	);
