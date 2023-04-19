@@ -159,7 +159,7 @@ export default function SignUpValueBox({ sort, getData }) {
 	// 사용자가 입력한 ID와 email이 DB에 이미 저장되어 있는지 DB에 확인 요청하는 fetch
 	const fetchData = (sort, value) => {
 		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/signup?sort=${sort}&value=${value}`
+			`${process.env.REACT_APP_BACKEND_URL}/users/signup?sort=${sort}&value=${value}`
 		)
 			.then((res) => res.json())
 			.then((data) => {
@@ -175,7 +175,7 @@ export default function SignUpValueBox({ sort, getData }) {
 	// 호출 시 서버에서 사용자에게 메일을 발송
 	const requestValidateCode = () => {
 		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/validatecode?email=${emailInputBox.current.value}`
+			`${process.env.REACT_APP_BACKEND_URL}/validatecode?email=${emailInputBox.current.value}`
 		)
 			.then((res) => res.json())
 			.then((data) => console.log(data))
@@ -189,16 +189,13 @@ export default function SignUpValueBox({ sort, getData }) {
 			validateCode: emailValidateCheckInputBox.current.value,
 		};
 
-		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/validateCode`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(fetchData),
-			}
-		)
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/validateCode`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(fetchData),
+		})
 			.then((res) => res.json())
 			.then((data) => {
 				console.log(data);

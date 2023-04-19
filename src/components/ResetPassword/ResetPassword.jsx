@@ -132,28 +132,11 @@ export default function ResetPassword() {
 		});
 	};
 
-	// TODO 삭제 필요여부 확인하기
-	// 사용자가 입력한 ID와 email이 DB에 이미 저장되어 있는지 DB에 확인 요청하는 fetch
-	// const fetchData = (sort, value) => {
-	// 	fetch(
-	// 		`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/signup?sort=${sort}&value=${value}`
-	// 	)
-	// 		.then((res) => res.json())
-	// 		.then((data) => {
-	// 			console.log(data);
-	// 			if (data.data.length === 0) {
-	// 				setCheckDataExists((checkDataExists) => (checkDataExists = false));
-	// 			} else {
-	// 				setCheckDataExists((checkDataExists) => (checkDataExists = true));
-	// 			}
-	// 		});
-	// };
-
 	// 사용자가 입력한 email로 인증코드를 요청하는 fetch
 	// 호출 시 서버에서 사용자에게 메일을 발송
 	const requestValidateCode = () => {
 		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/validatecode?email=${emailInputBox.current.value}`
+			`${process.env.REACT_APP_BACKEND_URL}/validatecode?email=${emailInputBox.current.value}`
 		)
 			.then((res) => res.json())
 			.then((data) => console.log(data))
@@ -166,16 +149,13 @@ export default function ResetPassword() {
 			validateCode: emailValidateCheckInputBox.current.value,
 		};
 
-		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/validateCode`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(fetchData),
-			}
-		)
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/validateCode`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(fetchData),
+		})
 			.then((res) => res.json())
 			.then((data) => {
 				console.log(data);
@@ -213,7 +193,7 @@ export default function ResetPassword() {
 			throw error;
 		}
 		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/checkUserMatch?name=${values.name}&email=${values.email}`
+			`${process.env.REACT_APP_BACKEND_URL}/users/checkUserMatch?name=${values.name}&email=${values.email}`
 		)
 			.then((res) => res.json())
 			.then((data) => {
@@ -223,16 +203,13 @@ export default function ResetPassword() {
 				}
 			})
 			.then(() => {
-				return fetch(
-					`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/password`,
-					{
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(values),
-					}
-				);
+				return fetch(`${process.env.REACT_APP_BACKEND_URL}/users/password`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(values),
+				});
 			})
 			.then((res) => res.json())
 			.then((data) => console.log(data))

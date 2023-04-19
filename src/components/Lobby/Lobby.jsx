@@ -11,13 +11,10 @@ import io from 'socket.io-client';
 import ConnectorInfoBox from './ConnectorInfoBox.jsx';
 import Swal from 'sweetalert2';
 
-const wsClient = io.connect(
-	`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}`,
-	{
-		path: '/socket.io',
-		transports: ['websocket'],
-	}
-);
+const wsClient = io.connect(`${process.env.REACT_APP_BACKEND_URL}`, {
+	path: '/socket.io',
+	transports: ['websocket'],
+});
 
 export const callSocket = (
 	sort,

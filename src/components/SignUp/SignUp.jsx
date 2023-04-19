@@ -105,7 +105,7 @@ export default function SignUpForm() {
 
 			// DB에 동일한 이름이 저장되어 있는지 검사
 			fetch(
-				`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/signup?sort=name&value=${values.name}`
+				`${process.env.REACT_APP_BACKEND_URL}/users/signup?sort=name&value=${values.name}`
 			)
 				.then((res) => {
 					return res.json();
@@ -119,7 +119,7 @@ export default function SignUpForm() {
 				.then((email) => {
 					// DB에 동일한 email이 저장되어 있는지 검사
 					return fetch(
-						`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/signUp?sort=email&value=${email}`
+						`${process.env.REACT_APP_BACKEND_URL}/users/signUp?sort=email&value=${email}`
 					);
 				})
 				.then((res) => {
@@ -133,16 +133,13 @@ export default function SignUpForm() {
 				})
 				.then((fetchData) => {
 					// DB에 저장 요청
-					return fetch(
-						`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/signUp`,
-						{
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(fetchData),
-						}
-					);
+					return fetch(`${process.env.REACT_APP_BACKEND_URL}/users/signUp`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(fetchData),
+					});
 				})
 				.then((res) => res.json())
 				// --------------서버에서 제대로 저장했다는 응답 있을 시 alert창 띄우기-------------- //

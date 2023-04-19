@@ -19,16 +19,13 @@ export default function Introduction() {
 			email: sessionStorage.getItem('email'),
 		};
 
-		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/mail/testRequestMail`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			}
-		).then((res) => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/mail/testRequestMail`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		}).then((res) => {
 			if (res.status === 400) {
 				Swal.fire({
 					title: `Error occurred!`,

@@ -34,16 +34,13 @@ export default function SignIn() {
 				const error = new Error('INVALID FOR REGEX');
 				throw error;
 			}
-			fetch(
-				`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/signin`,
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(fetchData),
-				}
-			)
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/users/signin`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(fetchData),
+			})
 				.then((res) => res.json())
 				.then((data) => {
 					console.log(data);
@@ -57,7 +54,7 @@ export default function SignIn() {
 				})
 				.then(() => {
 					return fetch(
-						`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/connectCheck`,
+						`${process.env.REACT_APP_BACKEND_URL}/users/connectCheck`,
 						{
 							method: 'POST',
 							headers: {
