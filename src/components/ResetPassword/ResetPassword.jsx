@@ -15,7 +15,7 @@ export default function ResetPassword() {
 	// 사용자가 입력한 값들을 저장하는 state
 	const [values, setValues] = useState({});
 	const [emailInputBoxToggle, setEmailInputBoxToggle] = useState(true);
-	const [checkDataExists, setCheckDataExists] = useState(false);
+	// const [checkDataExists, setCheckDataExists] = useState(false);
 
 	//------------------------------ ref ------------------------------//
 	// 사용자가 입력하는 email input 감지를 위한 useRef
@@ -132,21 +132,22 @@ export default function ResetPassword() {
 		});
 	};
 
+	// TODO 삭제 필요여부 확인하기
 	// 사용자가 입력한 ID와 email이 DB에 이미 저장되어 있는지 DB에 확인 요청하는 fetch
-	const fetchData = (sort, value) => {
-		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/signup?sort=${sort}&value=${value}`
-		)
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data);
-				if (data.data.length === 0) {
-					setCheckDataExists((checkDataExists) => (checkDataExists = false));
-				} else {
-					setCheckDataExists((checkDataExists) => (checkDataExists = true));
-				}
-			});
-	};
+	// const fetchData = (sort, value) => {
+	// 	fetch(
+	// 		`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/signup?sort=${sort}&value=${value}`
+	// 	)
+	// 		.then((res) => res.json())
+	// 		.then((data) => {
+	// 			console.log(data);
+	// 			if (data.data.length === 0) {
+	// 				setCheckDataExists((checkDataExists) => (checkDataExists = false));
+	// 			} else {
+	// 				setCheckDataExists((checkDataExists) => (checkDataExists = true));
+	// 			}
+	// 		});
+	// };
 
 	// 사용자가 입력한 email로 인증코드를 요청하는 fetch
 	// 호출 시 서버에서 사용자에게 메일을 발송
@@ -204,57 +205,56 @@ export default function ResetPassword() {
 	const fetchResetPassword = (event) => {
 		event.preventDefault();
 
-		try {
-			if (checkRegexTest(values) === 'somethingWrong') {
-				const error = new Error('INVALID FOR REGEX');
-				throw error;
-			} else if (values.password !== values.passwordCrossCheck) {
-				const error = new Error('PASSWORDS NO MATCH');
-				throw error;
-			}
-			fetch(
-				`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/checkUserMatch?name=${values.name}&email=${values.email}`
-			)
-				.then((res) => res.json())
-				.then((data) => {
-					if (data.data.length === 0) {
-						const error = new Error('NO USER IN DB');
-						throw error;
-					}
-				})
-				.then(() => {
-					return fetch(
-						`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/password`,
-						{
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(values),
-						}
-					);
-				})
-				.then((res) => res.json())
-				.then((data) => console.log(data))
-				.then(() => {
-					Swal.fire({
-						title: 'Password reset!',
-						text: 'Hit the OK button to sign in',
-						icon: 'success',
-					});
-				})
-				.then(() => {
-					navigate('/');
-				});
-		} catch (error) {
-			console.error(error);
-			Swal.fire({
-				title: `Error occurred!`,
-				icon: 'error',
-				text: 'Please check data again',
-				showConfirmButton: true,
-			});
+		if (checkRegexTest(values) === 'somethingWrong') {
+			const error = new Error('INVALID FOR REGEX');
+			throw error;
+		} else if (values.password !== values.passwordCrossCheck) {
+			const error = new Error('PASSWORDS NO MATCH');
+			throw error;
 		}
+		fetch(
+			`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/checkUserMatch?name=${values.name}&email=${values.email}`
+		)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.data.length === 0) {
+					const error = new Error('NO USER IN DB');
+					throw error;
+				}
+			})
+			.then(() => {
+				return fetch(
+					`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_BACKEND_PORT}/users/password`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(values),
+					}
+				);
+			})
+			.then((res) => res.json())
+			.then((data) => console.log(data))
+			.then(() => {
+				Swal.fire({
+					title: 'Password reset!',
+					text: 'Hit the OK button to sign in',
+					icon: 'success',
+				});
+			})
+			.then(() => {
+				navigate('/');
+			})
+			.catch((error) => {
+				console.error(error);
+				Swal.fire({
+					title: `Error occurred!`,
+					icon: 'error',
+					text: 'Please check data again',
+					showConfirmButton: true,
+				});
+			});
 	};
 
 	//------------------------------ effect ------------------------------//
@@ -326,7 +326,7 @@ export default function ResetPassword() {
 						className="valueInputBox"
 						name="email"
 						onChange={(event) => {
-							fetchData('email', event.target.value);
+							// fetchData('email', event.target.value);
 							handleValue(event);
 						}}
 					/>
@@ -337,7 +337,8 @@ export default function ResetPassword() {
 							handleEmailInputBoxToggle();
 							requestValidateCode();
 						}}
-						disabled={!checkDataExists || !emailInputBoxToggle}
+						disabled={!emailInputBoxToggle}
+						// disabled={!checkDataExists || !emailInputBoxToggle}
 						className="validateCodeSendButton"
 					>
 						Send validate code
