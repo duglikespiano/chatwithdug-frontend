@@ -19,22 +19,28 @@ export default function ChatTextInputBox({
 			}
 		}
 		if (event.key === 'Escape') {
-			console.log('여기 두번 뜨나? esc');
 			if (event.nativeEvent.isComposing === false) {
+				event.target.value = '';
 			}
 		}
 	};
+
 	const handleSubmit = (event) => {
-		callSocket(
-			'chatContents',
-			myInfo.userName,
-			myInfo.userSocketId,
-			yourInfo.userName,
-			yourInfo.userSocketId,
-			chatTextInputBox.current.value,
-			roomNumber
-		);
-		chatTextInputBox.current.value = '';
+		if (event.target.value.trim() !== '') {
+			callSocket(
+				'chatContents',
+				myInfo.userName,
+				myInfo.userSocketId,
+				yourInfo.userName,
+				yourInfo.userSocketId,
+				chatTextInputBox.current.value,
+				roomNumber
+			);
+			chatTextInputBox.current.value = '';
+		} else {
+			chatTextInputBox.current.value = '';
+			return;
+		}
 	};
 
 	const handleChatTyping = () => {
