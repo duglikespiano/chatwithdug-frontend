@@ -103,7 +103,6 @@ export default function Lobby() {
 
 		wsClient.on('leaveRoomNotification', (element1, element2) => {
 			if (element1 === sessionStorage.getItem('yourSocketId')) {
-				console.log('오나');
 				setLeave(true);
 			}
 		});

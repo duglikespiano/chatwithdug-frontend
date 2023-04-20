@@ -178,7 +178,6 @@ export default function SignUpValueBox({ sort, getData }) {
 			`${process.env.REACT_APP_BACKEND_URL}/validatecode?email=${emailInputBox.current.value}`
 		)
 			.then((res) => res.json())
-			.then((data) => console.log(data))
 			.catch((error) => console.error(error));
 	};
 
@@ -198,7 +197,6 @@ export default function SignUpValueBox({ sort, getData }) {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
 				return data.message;
 			})
 			.then((message) => {

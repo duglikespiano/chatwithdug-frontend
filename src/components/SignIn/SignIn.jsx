@@ -43,7 +43,6 @@ export default function SignIn() {
 			})
 				.then((res) => res.json())
 				.then((data) => {
-					console.log(data);
 					if (data.message === 'NO USER DATA IN DB') {
 						Swal.fire('Account error', 'Please Check account data!', 'error');
 					} else {

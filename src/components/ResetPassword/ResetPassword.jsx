@@ -139,7 +139,6 @@ export default function ResetPassword() {
 			`${process.env.REACT_APP_BACKEND_URL}/validatecode?email=${emailInputBox.current.value}`
 		)
 			.then((res) => res.json())
-			.then((data) => console.log(data))
 			.catch((error) => console.error(error));
 	};
 
@@ -158,7 +157,6 @@ export default function ResetPassword() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
 				return data.message;
 			})
 			.then((message) => {
@@ -212,7 +210,7 @@ export default function ResetPassword() {
 				});
 			})
 			.then((res) => res.json())
-			.then((data) => console.log(data))
+
 			.then(() => {
 				Swal.fire({
 					title: 'Password reset!',
