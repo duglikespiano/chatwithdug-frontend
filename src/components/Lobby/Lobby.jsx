@@ -112,7 +112,7 @@ export default function Lobby() {
 			const timeout = () => {
 				setTyping(false);
 			};
-			const id = setTimeout(timeout, 1000);
+			const id = setTimeout(timeout, 10);
 			if (new Date() - time > -1) {
 				time = new Date();
 				clearTimeout(id - 1);
