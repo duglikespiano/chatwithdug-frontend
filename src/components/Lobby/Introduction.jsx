@@ -97,7 +97,7 @@ export default function Introduction() {
 			<div />
 			<br />
 
-			<h3>Want to test this page but no one to do with?</h3>
+			<h3>Need someone to test this page with?</h3>
 			<h4>
 				Just hit the mail image!{' '}
 				<RiMailLine id="mailImage" onClick={fetchTestRequestMail} />

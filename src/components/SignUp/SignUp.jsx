@@ -160,7 +160,7 @@ export default function SignUpForm() {
 					handleShowSubmitError();
 					Swal.fire({
 						title: 'Error!',
-						text: 'Please contant to Dug!',
+						text: 'Please Contact to Dug!',
 						icon: 'error',
 					});
 				});
@@ -171,7 +171,7 @@ export default function SignUpForm() {
 			handleShowSubmitError();
 			Swal.fire({
 				title: 'Error!',
-				text: 'Please contant to Dug!',
+				text: 'Please Contact to Dug!',
 				icon: 'error',
 			});
 		}
