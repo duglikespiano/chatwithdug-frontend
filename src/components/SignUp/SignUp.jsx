@@ -82,7 +82,7 @@ export default function SignUpForm() {
 		event.preventDefault();
 		// 검사 할 대상을 객체형태로 변환
 		const fetchData = {
-			name: values.name,
+			name: values.name.toLowerCase(),
 			password: values.password,
 			passwordCrossCheck: values.passwordCrossCheck,
 			email: values.email,

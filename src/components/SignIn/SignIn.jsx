@@ -26,7 +26,7 @@ export default function SignIn() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const fetchData = {
-			name: inputName.current.value,
+			name: inputName.current.value.toLowerCase(),
 			password: inputPassword.current.value,
 		};
 		try {
