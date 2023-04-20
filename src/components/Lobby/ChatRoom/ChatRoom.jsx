@@ -61,6 +61,7 @@ export default function ChatRoom() {
 		window.history.pushState(null, '', window.location.href);
 		return () => {
 			window.removeEventListener('popstate', quitChatRoom);
+			sessionStorage.removeItem('yourSocketId');
 			sessionStorage.removeItem('roomNumber');
 		};
 		// eslint-disable-next-line

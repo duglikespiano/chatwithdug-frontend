@@ -62,7 +62,6 @@ export default function Lobby() {
 	const [roomNumber, setRoomNumber] = useState('');
 	const [leave, setLeave] = useState(false);
 	const [typing, setTyping] = useState(false);
-
 	const leaveHandler = () => {
 		setLeave(false);
 	};
@@ -103,7 +102,10 @@ export default function Lobby() {
 		});
 
 		wsClient.on('leaveRoomNotification', (element1, element2) => {
-			setLeave(true);
+			if (element1 === sessionStorage.getItem('yourSocketId')) {
+				console.log('오나');
+				setLeave(true);
+			}
 		});
 
 		let time = new Date();
@@ -194,6 +196,7 @@ export default function Lobby() {
 					setLeave(false);
 					// 초대를 받고 수락한 사람의 화면 전환
 					setChatContents([]);
+					sessionStorage.setItem('yourSocketId', inviter);
 					// sessionStorage.setItem('status', 'chatting');
 					navigate('/lobby/chatroom');
 				} else {
@@ -222,10 +225,11 @@ export default function Lobby() {
 				setLeave(false);
 				wsClient.emit('status', myInfo.userSocketId, true);
 				setChatContents([]);
+				sessionStorage.setItem('yourSocketId', toWsId);
 				navigate('/lobby/chatroom');
 			}
 		});
-	}, [navigate, connector, myInfo.userSocketId]);
+	}, [navigate, connector, myInfo.userSocketId, yourInfo.userSocketId]);
 
 	wsClient.on('inviteDenied', (boolean) => {
 		if (boolean === false) {
@@ -239,7 +243,14 @@ export default function Lobby() {
 
 	return (
 		<div id="Lobby">
-			<ConnectorInfoBox connector={connector} myInfo={myInfo} />
+			<ConnectorInfoBox
+				connector={connector}
+				myInfo={myInfo}
+				context={{
+					leaveHandler,
+					roomNumberHandler,
+				}}
+			/>
 			<Outlet
 				context={{
 					chatContents,

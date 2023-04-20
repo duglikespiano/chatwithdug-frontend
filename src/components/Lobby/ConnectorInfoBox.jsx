@@ -10,6 +10,8 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 	const [exceptMeInfo, setExceptMeInfo] = useState([]);
 	const navigate = useNavigate();
 
+	//TODO 상대방 socketId를 session storage에 저장
+	//있을 경우 callSocket하기
 	const signOut = () => {
 		Swal.fire({
 			title: 'Would you like to sign out?',
@@ -21,6 +23,15 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 			cancelButtonText: 'Cancel',
 		}).then((result) => {
 			if (result.isConfirmed) {
+				callSocket(
+					'leaveRoomNotification',
+					myInfo.userSocketId,
+					sessionStorage.getItem('yourSocketId'),
+					`${myInfo.userSocketId} has left from ${sessionStorage.getItem(
+						'roomNumber'
+					)}`
+				);
+				callSocket('status', myInfo.userSocketId, false);
 				navigate('/');
 			} else {
 				return;
@@ -40,7 +51,10 @@ export default function ConnectorInfoBox({ connector, myInfo }) {
 			<div id="infoBox">Online users</div>
 			<div id="myProfileBox">
 				<CgProfile id="myProfilePicture" />
-				<div>{myInfo.userName} (You)</div>
+				<div>
+					{myInfo.userName} (You)
+					{myInfo.userSocketId}
+				</div>
 				<div id="signOut" onClick={signOut}>
 					Click here to sign out
 				</div>
