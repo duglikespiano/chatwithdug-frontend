@@ -1,8 +1,3 @@
-// TODO 초대를 받을 때 이미 status 바꾸기(client.on('invite)발생 시 바꾸기, lobby에서 발생)
-// TODO 초대를 할 때도 이미 status 바꾸기(client.on('invite)발생 시 바꾸기, connectorinfobox에서 callsocket 함수 호출로 발생)
-// TODO 방에서 나갈 때 초대 한 사람이나 초대 받은 사람이나 status 바꾸기 (leaveRoomNotification에 status 변경함수 호출해서 채팅 가능상태로 되돌리기)
-// TODO 초대 한 사람이 나갈 때 뭔가 element2가 잘 전달되지 않는 상황 발생 -> 초대 받은 사람이 나갈 때는 잘 됨
-
 import { useState, useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import './Lobby.css';
@@ -25,10 +20,7 @@ export const callSocket = (
 	element5,
 	element6
 ) => {
-	// TODO invite의 경우 element1은 초대 하는 사람, element2는 초대 받는사람임
 	// TODO 이 함수 보기좋게 정리 할 것
-	// TODO 엄청 헷갈리게 보인다
-	// TODO 적어도 주석이라도 제대로 달아 둘 것
 	if (sort === 'invite') {
 		wsClient.emit(sort, element1, element2, element3);
 		wsClient.emit('status', element1, true);
@@ -51,7 +43,6 @@ export const callSocket = (
 	}
 };
 
-// TODO에서 myInfo, yourInfo 나눠서 name이랑 socketId 함께 저장해서 다룰 것
 export default function Lobby() {
 	const navigate = useNavigate();
 	const [connector, setConnector] = useState([]);
@@ -122,28 +113,17 @@ export default function Lobby() {
 
 		return () => {
 			// 사용자가 lobby에서 뒤로가기 버튼을 누를 때, 현재 lobby에 접속한 모든 사용자 정보를 갱신
-			wsClient.emit('backButton');
+			wsClient.emit('leavePage');
 		};
 	}, []);
 
 	useEffect(() => {
-		wsClient.on('kick', (message) => {
-			if (message === false) {
-				navigate('/');
-
-				Swal.fire({
-					title: `Your Account is already being used`,
-					icon: 'error',
-					showConfirmButton: true,
-				});
-			}
-		});
-
 		if (!sessionStorage.getItem('token')) {
 			navigate('/');
 		}
 
 		let time = new Date();
+
 		wsClient.on('typing', (msg) => {
 			setTyping(true);
 			const timeout = () => {
@@ -196,7 +176,6 @@ export default function Lobby() {
 					// 초대를 받고 수락한 사람의 화면 전환
 					setChatContents([]);
 					sessionStorage.setItem('yourSocketId', inviter);
-					// sessionStorage.setItem('status', 'chatting');
 					navigate('/lobby/chatroom');
 				} else {
 					wsClient.emit('status', myInfo.userSocketId, false);
@@ -206,9 +185,6 @@ export default function Lobby() {
 		});
 
 		// 초대를 한 사람이 상대방이 초대를 수락했다는 메세지를 받을 경우,
-		// TODO 방제 공유 event만들어야 함 -> 논리에서 넣을 곳 찾아볼 것
-		// TODO 방제를 고정시켜서 inviter, invitee가 동일하게 자료를 받을 필요가 있음 -> 어느 시점에 만들지 확인 할 것
-		// TODO 방제 state를 한 개 더 만들어서 서로 공유하자 -> frontend에서 처리 할 것
 		wsClient.on('inviteAccepted', (message, toWsId) => {
 			if (message === true) {
 				const toData = connector.filter(
