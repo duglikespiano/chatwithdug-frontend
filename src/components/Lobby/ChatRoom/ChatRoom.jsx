@@ -6,7 +6,6 @@ import ChatTextInputBox from './ChatTextInputBox.jsx';
 import ChatContentsBox from './ChatContentsBox.jsx';
 import { callSocket } from '../Lobby.jsx';
 import './ChatRoom.css';
-import { history } from '../../../index.js';
 
 export default function ChatRoom() {
 	const navigate = useNavigate();
@@ -42,37 +41,30 @@ export default function ChatRoom() {
 				leaveHandler();
 				callSocket('status', myInfo.userSocketId, false);
 				roomNumberHandler();
+			} else {
+				window.history.pushState(null, '', window.location.href);
 			}
 		});
 	};
 
 	//------------------------------ effect ------------------------------//
-	// // 사용자가 페이지를 떠나기 전 확인을 위한 function등록을 위한 useEffect
+	// 사용자가 페이지를 떠나기 전 확인을 위한 function등록을 위한 useEffect
 	useEffect(() => {
 		if (myInfo.userSocketId && !yourInfo.userSocketId && !roomNumber) {
 			navigate('/lobby');
 		}
 	}, [navigate, roomNumber, myInfo.userSocketId, yourInfo.userSocketId]);
 
+	// 사용자가 페이지를 떠나기 전 확인을 위한 function등록을 위한 useEffect
 	useEffect(() => {
+		window.addEventListener('popstate', quitChatRoom);
+		window.history.pushState(null, '', window.location.href);
 		return () => {
+			window.removeEventListener('popstate', quitChatRoom);
 			sessionStorage.removeItem('roomNumber');
 		};
+		// eslint-disable-next-line
 	}, []);
-
-	useEffect(() => {
-		const preventBack = () => {
-			history.push('/lobby/chatroom');
-			quitChatRoom();
-		};
-
-		const unlistenHistoryEvent = history.listen(({ action }) => {
-			if (action === 'POP') {
-				preventBack();
-			}
-		});
-		return unlistenHistoryEvent;
-	});
 
 	return (
 		<div id="ChatRoom">
