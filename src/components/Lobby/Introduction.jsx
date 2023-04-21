@@ -19,7 +19,7 @@ export default function Introduction() {
 			email: sessionStorage.getItem('email'),
 		};
 
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/mail/testRequestMail`, {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/mail/notification`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

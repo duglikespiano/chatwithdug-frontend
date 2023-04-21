@@ -175,7 +175,7 @@ export default function SignUpValueBox({ sort, getData }) {
 	// 호출 시 서버에서 사용자에게 메일을 발송
 	const requestValidateCode = () => {
 		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}/validatecode?email=${emailInputBox.current.value}`
+			`${process.env.REACT_APP_BACKEND_URL}/mail/validatecode?email=${emailInputBox.current.value}`
 		)
 			.then((res) => res.json())
 			.catch((error) => console.error(error));
@@ -188,7 +188,7 @@ export default function SignUpValueBox({ sort, getData }) {
 			validateCode: emailValidateCheckInputBox.current.value,
 		};
 
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/validateCode`, {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/mail/validatecode`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -199,11 +199,11 @@ export default function SignUpValueBox({ sort, getData }) {
 			.then((data) => {
 				return data.message;
 			})
-			.then((message) => {
-				if (message === 'INVALID CODE') {
-					const error = new Error('INVALID CODE');
+			.then((result) => {
+				if (result === false) {
+					const error = new Error('VALIDATE CODE NOT MATCHED');
 					throw error;
-				} else if (message === 'VALIDATE CODE CONFIRMED') {
+				} else if (result === true) {
 					setValidateCodeMatchCheck(
 						(validateCodeMatchCheck) => (validateCodeMatchCheck = true)
 					);
@@ -415,7 +415,24 @@ export default function SignUpValueBox({ sort, getData }) {
 									</button>
 								</>
 							) : (
-								<NoticeValidateCodeSent />
+								<>
+									<button
+										type="button"
+										className="test"
+										onClick={() => {
+											handleEmailValidateCodeBoxToggle();
+											handleEmailInputBoxToggle();
+											handleSetEmailValidateInputBoxToggle();
+											handleValidateCodeMatchCheck();
+											handleEmailConfirm();
+											handleResetValidateCodeInputCheck();
+											handleSetCheckSubmitValidateCode();
+										}}
+									>
+										Cancel
+									</button>
+									<NoticeValidateCodeSent />
+								</>
 							)}
 						</div>
 					) : (

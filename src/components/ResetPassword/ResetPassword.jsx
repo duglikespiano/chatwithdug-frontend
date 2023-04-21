@@ -136,7 +136,7 @@ export default function ResetPassword() {
 	// 호출 시 서버에서 사용자에게 메일을 발송
 	const requestValidateCode = () => {
 		fetch(
-			`${process.env.REACT_APP_BACKEND_URL}/validatecode?email=${emailInputBox.current.value}`
+			`${process.env.REACT_APP_BACKEND_URL}/mail/validatecode?email=${emailInputBox.current.value}`
 		)
 			.then((res) => res.json())
 			.catch((error) => console.error(error));
@@ -148,7 +148,7 @@ export default function ResetPassword() {
 			validateCode: emailValidateCheckInputBox.current.value,
 		};
 
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/validateCode`, {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/mail/validatecode`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
