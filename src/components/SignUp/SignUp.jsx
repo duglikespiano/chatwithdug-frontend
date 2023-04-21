@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
 import SignUpValueBox from './SignUpValueBox/SignUpValueBox.jsx';
 import Swal from 'sweetalert2';
-import NoticeSignUpDataError from './SignUpValueBox/Notice/NoticeSignUpDataError.jsx';
+import NoticeSignUpDataError from './SignUpValueBox/NoticeComponent/NoticeSignUpDataError.jsx';
 
 export default function SignUpForm() {
 	//------------------------------ regex ------------------------------//
 	// 사용자가 입력한 값들의 유효성 검사에 필요한 regular expressions
-	const nameRegex = /[a-z0-9_-]{5,15}/;
+	const nameRegex = /^[a-zA-Z0-9_-]{5,15}$/;
 	const passwordRegex =
 		/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/;
 	const emailRegex = /^[a-zA-Z0-9+-.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -33,12 +33,6 @@ export default function SignUpForm() {
 		} else {
 			return false;
 		}
-	};
-
-	// 사용자의 페이지 새로고침, 닫기 방지를 위한 function
-	const preventClose = (event) => {
-		event.preventDefault();
-		event.returnValue = ''; //Chrome에서 동작하도록; deprecated
 	};
 
 	// 사용자의 페이지 뒤로가기 방지를 위한 function
@@ -99,7 +93,7 @@ export default function SignUpForm() {
 				values.emailConfirm === false ||
 				values.emailConfirm === undefined
 			) {
-				const error = new Error('INVALID EMAIL');
+				const error = new Error('EMAIL NOT CONFIRMED');
 				throw error;
 			}
 
@@ -144,14 +138,16 @@ export default function SignUpForm() {
 				.then((res) => res.json())
 				// --------------서버에서 제대로 저장했다는 응답 있을 시 alert창 띄우기-------------- //
 				.then(() => {
-					Swal.fire({
+					return Swal.fire({
 						title: 'Signed up!',
 						text: 'Hit the OK button to sign in',
 						icon: 'success',
 					});
 				})
-				.then(() => {
-					navigate('/');
+				.then((result) => {
+					if (result.isConfirmed || result.isDismissed) {
+						navigate('/');
+					}
 				})
 				.catch((error) => {
 					// 에러 발생 시, 사용자가 입력한 값들의 유효성 만족여부를 확인 및 저장하는 state를 false로 변경
@@ -180,11 +176,9 @@ export default function SignUpForm() {
 	//------------------------------ effect ------------------------------//
 	// // 사용자가 페이지를 떠나기 전 확인을 위한 function등록을 위한 useEffect
 	useEffect(() => {
-		window.addEventListener('beforeunload', preventClose);
 		window.addEventListener('popstate', preventBack);
 		window.history.pushState(null, '', window.location.href);
 		return () => {
-			window.removeEventListener('beforeunload', preventClose);
 			window.removeEventListener('popstate', preventBack);
 		};
 		// eslint-disable-next-line

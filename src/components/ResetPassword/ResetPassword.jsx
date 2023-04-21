@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NoticeValidateCodeSent from '../SignUp/SignUpValueBox/Notice/NoticeValidateCodeSent.jsx';
-import NoticeValidateCodeCheckResult from '../SignUp/SignUpValueBox/Notice/NoticeValidateCodeCheckResult.jsx';
-import NoticeEmptyInputValue from '../SignUp/SignUpValueBox/Notice/NoticeEmptyInputValue.jsx';
-import NoticeInvalidInputValue from '../SignUp/SignUpValueBox/Notice/NoticeInvalidInputValue.jsx';
+import NoticeComponent from '../SignUp/SignUpValueBox/NoticeComponent/NoticeComponent.jsx';
 import './ResetPassword.css';
 import Swal from 'sweetalert2';
 
@@ -289,7 +286,9 @@ export default function ResetPassword() {
 						}}
 					/>
 					{/* 사용자의 focus가 있었으나 입력값이 존재하지 않을 경우 안내문구 출력 */}
-					{!values.name && touched.name ? <NoticeEmptyInputValue /> : null}
+					{!values.name && touched.name ? (
+						<NoticeComponent sort={'emptyValue'} />
+					) : null}
 				</div>
 
 				<div className="elementRow">
@@ -343,9 +342,7 @@ export default function ResetPassword() {
 							</button>
 							{validateCodeInputBoxToggle ? (
 								<div>
-									<NoticeValidateCodeCheckResult
-										props={validateCodeMatchCheck}
-									/>
+									<NoticeComponent sort={validateCodeMatchCheck} />
 									<button
 										type="button"
 										className="emailValidateCodeButton "
@@ -362,7 +359,7 @@ export default function ResetPassword() {
 									</button>
 								</div>
 							) : (
-								<NoticeValidateCodeSent />
+								<NoticeComponent sort="validateCodeSent" />
 							)}
 						</div>
 					) : null}
@@ -388,14 +385,15 @@ export default function ResetPassword() {
 					{/*   */}
 					{/* 사용자의 focus가 있었으나 입력값이 존재하지 않을 경우 안내문구 출력 */}
 					{!values.password && touched.password ? (
-						<NoticeEmptyInputValue />
+						<NoticeComponent sort={'emptyValue'} />
 					) : null}
 					{/*   */}
 					{/* 사용자의 입력값은 존재하나 정규식을 만족하지 않을 경우 안내문구 출력 */}
 					{(values.password && regexTest.password === false) ||
-					values.password?.includes(' ') ? (
-						<NoticeInvalidInputValue sort={'password'} />
-					) : null}
+					values.password?.includes(' ')
+						? null
+						: // <NoticeInvalidInputValue sort={'password'} />
+						  null}
 				</div>
 
 				{/*   */}
@@ -417,14 +415,14 @@ export default function ResetPassword() {
 					{/*   */}
 					{/* 사용자의 focus가 있었으나 입력값이 존재하지 않을 경우 안내문구 출력 */}
 					{!values.passwordCrossCheck && touched.passwordCrossCheck ? (
-						<NoticeEmptyInputValue />
+						<NoticeComponent sort={'emptyValue'} />
 					) : null}
 					{/*   */}
 					{/* 사용자의 입력값은 존재하나 정규식을 만족하지 않을 경우 안내문구 출력 */}
 					{values.passwordCrossCheck !== undefined &&
-					values.password !== values.passwordCrossCheck ? (
-						<NoticeInvalidInputValue sort={'passwordCrossCheck'} />
-					) : null}
+					values.password !== values.passwordCrossCheck
+						? null
+						: null}
 				</div>
 				{/*   */}
 				<button

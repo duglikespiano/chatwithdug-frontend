@@ -1,15 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import './SignUpValueBox.css';
-import NoticeEmptyInputValue from './Notice/NoticeEmptyInputValue.jsx';
-import NoticeInvalidInputValue from './Notice/NoticeInvalidInputValue.jsx';
-import NoticeDataExists from './Notice/NoticeDataExists.jsx';
-import NoticeValidateCodeSent from './Notice/NoticeValidateCodeSent.jsx';
-import NoticeValidateCodeCheckResult from './Notice/NoticeValidateCodeCheckResult.jsx';
+import NoticeComponent from './NoticeComponent/NoticeComponent.jsx';
+import NoticeValidateCodeCheckResult from './NoticeComponent/NoticeValidateCodeCheckResult.jsx';
 
 export default function SignUpValueBox({ sort, getData }) {
 	//------------------------------ regex ------------------------------//
 	// 사용자가 입력한 값들의 유효성 검사에 필요한 regular expressions
-	const nameRegex = /[a-z0-9_-]{5,15}/;
+	const nameRegex = /^[a-zA-Z0-9_-]{5,15}$/;
 	const passwordRegex =
 		/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/;
 	const emailRegex = /^[a-zA-Z0-9+-.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -27,75 +24,37 @@ export default function SignUpValueBox({ sort, getData }) {
 	// 사용자가 입력한 ID와 email이 DB에 이미 저장되어 있는지 확인 및 저장하는 state
 	const [checkDataExists, setCheckDataExists] = useState(false);
 
+	//---------------------------email HTML관련 state---------------------------//
 	// email인증코드 발송관련 html 전체 토글 상태를 저장하는 state
 	const [validateCodeBoxToggle, setValidateCodeBoxToggle] = useState(false);
-
-	// email인증코드 발송관련 html 중 email의 input box disabled 여부를 저장하는 state
-	// 사용자가 인증코드를 요청하면 email의 input box가 비활성화 됨
-	const [emailInputBoxToggle, setEmailInputBoxToggle] = useState(false);
-
-	// email인증코드 발송관련 html 중 email 인증코드의 input box의 disabled 여부를 저장하는 state
-	// 사용자가 인증코드를 입력 후, 확인버튼을 누르면 인증코드의 input box가 비활성화 됨
-	const [validateCodeInputBoxToggle, setValidateCodeInputBoxToggle] =
-		useState(false);
+	// email인증코드 발송관련 html 전체 토글 상태를 저장하는 state의 handler
+	const handleEmailValidateCodeBoxToggle = () => {
+		setValidateCodeBoxToggle(
+			(validateCodeBoxToggle) =>
+				(validateCodeBoxToggle = !validateCodeBoxToggle)
+		);
+	};
 
 	// email인증코드 발송관련 html 중 email 인증코드일치 확인요청 버튼의 disabled 여부를 저장하는 state
 	// 사용자가 입력한 인증코드가 6자리가 될 경우에만 인증코드일치 확인요청 버튼이 활성화 됨
 	const [validateCodeInputCheck, setValidateCodeInputCheck] = useState(false);
-
-	// 사용자가 입력한 email 인증코드일치 여부를 저장하는 state
-	const [validateCodeMatchCheck, setValidateCodeMatchCheck] = useState(false);
-
-	// email이 유효성 검사, 중복여부 검사, 인증코드일치 검사 통과 여부를 저장하는 state
-	const [checkIfEmailConfirmed, setCheckIfEmailConfirmed] = useState(false);
-
-	//------------------------------ handler ------------------------------//
-	// 사용자가 입력한 값들을 저장하는 state의 handler
-	const handleValue = (event) => {
-		setValues({
-			...values,
-			[event.target.name]: event.target.value,
-		});
-	};
-
-	// 사용자의 focus가 있었는지 여부를 저장하는 state의 hanlder
-	const handleValueTouched = (event) => {
-		if (touched[event.target.name] === undefined) {
-			setTouched({
-				...touched,
-				[event.target.name]: true,
-			});
+	// email인증코드 발송관련 html 중 email 인증코드일치 확인요청 버튼의 disabled 여부를 저장하는 state의 handler
+	const handleValidateCodeInputCheck = () => {
+		if (emailValidateCheckInputBox.current.value.trim().length === 6) {
+			setValidateCodeInputCheck(true);
+		} else {
+			setValidateCodeInputCheck(false);
 		}
 	};
 
-	// 사용자의 입력한 값이 정규식을 만족하는지 저장하는 state의 handler
-	const handleSetRegexTest = (event) => {
-		if (event.target.name === 'name') {
-			setRegexTest({
-				...regexTest,
-				[event.target.name]: nameRegex.test(event.target.value),
-			});
-		} else if (event.target.name === 'password') {
-			setRegexTest({
-				...regexTest,
-				[event.target.name]: passwordRegex.test(event.target.value),
-			});
-		} else if (event.target.name === 'email') {
-			setRegexTest({
-				...regexTest,
-				[event.target.name]: emailRegex.test(event.target.value),
-			});
-		}
-	};
+	// email인증코드 발송관련 html 중 email 인증코드의 input box의 disabled 여부를 저장하는 state
+	// email인증코드 발송관련 html 중 email 인증코드의 input box의 disabled 여부를 저장하는 state의 handler
+	const [validateCodeInputBoxToggle, setValidateCodeInputBoxToggle] =
+		useState(false);
 
-	// email인증코드 발송관련 html 전체 토글 상태를 저장하는 state의 handler
-	const handleEmailValidateCodeBoxToggle = () => {
-		setValidateCodeBoxToggle(
-			(emailValidateCodeBoxToggle) =>
-				(emailValidateCodeBoxToggle = !emailValidateCodeBoxToggle)
-		);
-	};
-
+	// email인증코드 발송관련 html 중 email의 input box disabled 여부를 저장하는 state
+	// 사용자가 인증코드를 요청하면 email의 input box가 비활성화 됨
+	const [emailInputBoxToggle, setEmailInputBoxToggle] = useState(false);
 	// email인증코드 발송관련 html 중 email의 input box disabled 여부를 저장하는 state의 handler
 	const handleEmailInputBoxToggle = () => {
 		setEmailInputBoxToggle(
@@ -103,56 +62,54 @@ export default function SignUpValueBox({ sort, getData }) {
 		);
 	};
 
-	// email인증코드 발송관련 html 중 email 인증코드의 input box의 disabled 여부를 저장하는 state의 handler
-	const handleSetEmailValidateInputBoxToggle = () => {
-		setValidateCodeInputBoxToggle(
-			(emailValidateCheckInputBoxToggle) =>
-				(emailValidateCheckInputBoxToggle = !emailValidateCheckInputBoxToggle)
-		);
+	// 사용자가 인증코드를 입력 후 확인 버튼을 눌렀는지 확인 하는 state
+	// 사용자의 인증코드가 확인 된 경우에만 true로 변환
+	const [checkSubmitValidateCode, setCheckSubmitValidateCode] = useState(false);
+
+	//---------------------------validateCode Check logic관련 state---------------------------//
+	// 사용자가 입력한 email 인증코드일치 여부를 저장하는 state
+	// 사용자가 입력한 email 인증코드일치 여부를 저장하는 state의 hanlder
+	// 사용자가 인증코드를 기입 및 전송 후 새로운 email을 적용하기 위해 취소 버튼을 누를 시, 해당상태를 초기화
+	const [validateCodeMatchCheck, setValidateCodeMatchCheck] = useState(false);
+
+	// email이 유효성 검사, 중복여부 검사, 인증코드일치 검사 통과 여부를 저장하는 state
+	const [checkIfEmailConfirmed, setCheckIfEmailConfirmed] = useState(false);
+	// email이 유효성 검사, 중복여부 검사, 인증코드일치 검사 통과 여부를 저장하는 state의 handler
+	// 사용자가 인증코드를 기입 및 전송 후 새로운 email을 적용하기 위해 취소 버튼을 누를 시, 해당상태를 초기화
+
+	//------------------------------ handler ------------------------------//
+	// 사용자가 입력한 값들을 저장하는 state의 handler
+	const handleValue = (sort) => {
+		setValues({
+			...values,
+			[sort.current.name]: sort.current.value,
+		});
 	};
 
-	// email인증코드 발송관련 html 중 email 인증코드일치 확인요청 버튼의 disabled 여부를 저장하는 state의 handler
-	const handleValidateCodeInputCheck = () => {
-		if (emailValidateCheckInputBox.current.value.trim().length === 6) {
-			setValidateCodeInputCheck(
-				(validateCodeInputCheck) => (validateCodeInputCheck = true)
-			);
-		} else {
-			setValidateCodeInputCheck(
-				(validateCodeInputCheck) => (validateCodeInputCheck = false)
-			);
+	// 사용자의 focus가 있었는지 여부를 저장하는 state의 hanlder
+	const handleValueTouched = (sort) => {
+		if (touched[sort.current.name] === undefined) {
+			setTouched({
+				...touched,
+				[sort.current.name]: true,
+			});
 		}
 	};
 
-	// 사용자가 인증코드를 입력 후 확인 버튼을 눌렀는지 확인 하는 state
-	const [checkSumbitValidateCode, setCheckSubmitValidateCode] = useState(false);
-
-	// 사용자가 입력한 인증코드가 옳든 그르든 우선 입력 후에는 true로 전환
-	const handleSetCheckSubmitValidateCode = () => {
-		setCheckSubmitValidateCode(
-			(checkSumbitValidateCode) =>
-				(checkSumbitValidateCode = !checkSumbitValidateCode)
-		);
-	};
-
-	const handleResetValidateCodeInputCheck = () => {
-		setValidateCodeInputCheck(
-			(validateCodeInputCheck) => (validateCodeInputCheck = false)
-		);
-	};
-
-	// 사용자가 입력한 email 인증코드일치 여부를 저장하는 state의 hanlder
-	// 사용자가 인증코드를 기입 및 전송 후 새로운 email을 적용하기 위해 취소 버튼을 누를 시, 해당상태를 초기화
-	const handleValidateCodeMatchCheck = () => {
-		setValidateCodeMatchCheck(
-			(validateCodeMatchCheck) => (validateCodeMatchCheck = false)
-		);
-	};
-
-	// email이 유효성 검사, 중복여부 검사, 인증코드일치 검사 통과 여부를 저장하는 state의 handler
-	// 사용자가 인증코드를 기입 및 전송 후 새로운 email을 적용하기 위해 취소 버튼을 누를 시, 해당상태를 초기화
-	const handleEmailConfirm = () => {
-		setCheckIfEmailConfirmed((emailConfirm) => (emailConfirm = false));
+	// 사용자의 입력한 값이 정규식을 만족하는지 저장하는 state의 handler
+	const handleSetRegexTest = (sort) => {
+		let regexSort;
+		if (sort.current.name === 'name') {
+			regexSort = nameRegex;
+		} else if (sort.current.name === 'password') {
+			regexSort = passwordRegex;
+		} else if (sort.current.name === 'email') {
+			regexSort = emailRegex;
+		}
+		setRegexTest({
+			...regexTest,
+			[sort.current.name]: regexSort.test(sort.current.value),
+		});
 	};
 
 	//------------------------------ fetch ------------------------------//
@@ -164,9 +121,9 @@ export default function SignUpValueBox({ sort, getData }) {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.data.length === 0) {
-					setCheckDataExists((checkDataExists) => (checkDataExists = false));
+					setCheckDataExists(false);
 				} else {
-					setCheckDataExists((checkDataExists) => (checkDataExists = true));
+					setCheckDataExists(true);
 				}
 			});
 	};
@@ -197,25 +154,36 @@ export default function SignUpValueBox({ sort, getData }) {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				return data.message;
+				return data.result;
 			})
 			.then((result) => {
 				if (result === false) {
 					const error = new Error('VALIDATE CODE NOT MATCHED');
 					throw error;
 				} else if (result === true) {
-					setValidateCodeMatchCheck(
-						(validateCodeMatchCheck) => (validateCodeMatchCheck = true)
-					);
+					setValidateCodeMatchCheck(true);
+					setCheckSubmitValidateCode(true);
+					setValidateCodeInputBoxToggle(true);
+					setCheckIfEmailConfirmed(true);
 				}
 			})
-			.then(() => {
-				setCheckIfEmailConfirmed((emailConfirm) => (emailConfirm = true));
-			})
-			.catch((error) => console.error(error));
+			.catch((error) => {
+				console.error(error);
+				setValidateCodeInputBoxToggle(true);
+			});
 	};
 
 	//------------------------------ ref ------------------------------//
+
+	//사용자가 입력하는 name input 감지를 위한 useRef
+	const nameInputBox = useRef();
+
+	//사용자가 입력하는 password input 감지를 위한 useRef
+	const passwordInputBox = useRef();
+
+	//사용자가 입력하는 password crosscheck input 감지를 위한 useRef
+	const passwordCrossCheckInputBox = useRef();
+
 	// 사용자가 입력하는 email input 감지를 위한 useRef
 	const emailInputBox = useRef();
 
@@ -239,33 +207,37 @@ export default function SignUpValueBox({ sort, getData }) {
 					<div className="valueSort">Username</div>
 					<input
 						className="valueInputBox"
+						ref={nameInputBox}
 						type="text"
 						name="name"
 						maxLength="15"
-						onChange={(event) => {
-							handleValue(event);
-							handleSetRegexTest(event);
-							fetchData('name', event.target.value);
-							getData(event.target.name, event.target.value);
+						onChange={() => {
+							handleValue(nameInputBox);
+							handleSetRegexTest(nameInputBox);
+							fetchData('name', nameInputBox.current.value);
+							getData(nameInputBox.current.name, nameInputBox.current.value);
 						}}
-						onBlur={(event) => {
-							handleValueTouched(event);
+						autoComplete="none"
+						onBlur={() => {
+							handleValueTouched(nameInputBox);
 						}}
 					/>
 					{/*   */}
 					{/* 사용자가 값을 입력 할 때 마다 이미 DB에 등록 된 값인지 확인하여 안내문구 출력 */}
-					{checkDataExists === true ? <NoticeDataExists /> : null}
+					{checkDataExists ? <NoticeComponent sort={'dataExists'} /> : null}
 					{/*   */}
 					{/* 사용자의 focus가 있었으나 입력값이 존재하지 않을 경우 안내문구 출력 */}
-					{!values.name && touched.name ? <NoticeEmptyInputValue /> : null}
+					{!nameInputBox.current?.value && touched.name ? (
+						<NoticeComponent sort={'emptyValue'} />
+					) : null}
 					{/*   */}
 					{/* 사용자의 입력값은 존재하나 정규식을 만족하지 않을 경우 안내문구 출력 */}
-					{(values.name && regexTest.name === false) ||
-					values.name?.includes(' ') ? (
-						<NoticeInvalidInputValue sort={'name'} />
+					{nameInputBox.current?.value && !regexTest.name ? (
+						<NoticeComponent sort={'invalidRegexName'} />
 					) : null}
 				</div>
 			) : null}
+			{/*   */}
 			{/*   */}
 			{/* sort가 password일 경우 password값 입력을 위한 컴포넌트 반환 */}
 			{sort === 'password' ? (
@@ -274,31 +246,35 @@ export default function SignUpValueBox({ sort, getData }) {
 					<input
 						className="valueInputBox"
 						type="password"
+						ref={passwordInputBox}
 						autoComplete="none"
 						name="password"
 						maxLength="16"
-						onChange={(event) => {
-							handleValue(event);
-							handleSetRegexTest(event);
-							getData(event.target.name, event.target.value);
+						onChange={() => {
+							handleValue(passwordInputBox);
+							handleSetRegexTest(passwordInputBox);
+							getData(
+								passwordInputBox.current.name,
+								passwordInputBox.current.value
+							);
 						}}
-						onBlur={(event) => {
-							handleValueTouched(event);
+						onBlur={() => {
+							handleValueTouched(passwordInputBox);
 						}}
 					/>
 					{/*   */}
 					{/* 사용자의 focus가 있었으나 입력값이 존재하지 않을 경우 안내문구 출력 */}
-					{!values.password && touched.password ? (
-						<NoticeEmptyInputValue />
+					{!passwordInputBox.current?.value && touched.password ? (
+						<NoticeComponent sort={'emptyValue'} />
 					) : null}
 					{/*   */}
 					{/* 사용자의 입력값은 존재하나 정규식을 만족하지 않을 경우 안내문구 출력 */}
-					{(values.password && regexTest.password === false) ||
-					values.password?.includes(' ') ? (
-						<NoticeInvalidInputValue sort={'password'} />
+					{passwordInputBox.current?.value && regexTest.password === false ? (
+						<NoticeComponent sort={'invalidRegexPassword'} />
 					) : null}
 				</div>
 			) : null}
+			{/*   */}
 			{/*   */}
 			{/* sort가 passwordCrossCheck일 경우 password값과 passwordCrossCheck값의 일치를 확인하는 컴포넌트 반환 */}
 			{sort === 'passwordCrossCheck' ? (
@@ -309,26 +285,33 @@ export default function SignUpValueBox({ sort, getData }) {
 						className="valueInputBox"
 						autoComplete="none"
 						name="passwordCrossCheck"
-						onChange={(event) => {
-							handleValue(event);
-							getData(event.target.name, event.target.value);
+						ref={passwordCrossCheckInputBox}
+						onChange={() => {
+							handleValue(passwordCrossCheckInputBox);
+							getData(
+								passwordCrossCheckInputBox.current.name,
+								passwordCrossCheckInputBox.current.value
+							);
 						}}
-						onBlur={handleValueTouched}
+						onBlur={() => {
+							handleValueTouched(passwordCrossCheckInputBox);
+						}}
 					/>
 					{/*   */}
 					{/* 사용자의 focus가 있었으나 입력값이 존재하지 않을 경우 안내문구 출력 */}
-					{!values.passwordCrossCheck && touched.passwordCrossCheck ? (
-						<NoticeEmptyInputValue />
-					) : null}
 					{/*   */}
 					{/* 사용자의 입력값은 존재하나 정규식을 만족하지 않을 경우 안내문구 출력 */}
 					{document.getElementsByClassName('valueInputBox')[1]?.value !==
-						values.passwordCrossCheck &&
-					values.passwordCrossCheck !== undefined ? (
-						<NoticeInvalidInputValue sort={'passwordCrossCheck'} />
+					passwordCrossCheckInputBox.current?.value ? (
+						<NoticeComponent sort={'passwordCrossCheckNoMatch'} />
+					) : null}
+					{!passwordCrossCheckInputBox.current?.value &&
+					touched.passwordCrossCheck ? (
+						<NoticeComponent sort={'emptyValue'} />
 					) : null}
 				</div>
 			) : null}
+			{/*   */}
 			{/*   */}
 			{/* sort가 email일 경우 email값 입력을 위한 컴포넌트 반환 */}
 			{sort === 'email' ? (
@@ -340,19 +323,22 @@ export default function SignUpValueBox({ sort, getData }) {
 						type="email"
 						className="valueInputBox"
 						name="email"
-						onChange={(event) => {
-							handleValue(event);
-							handleSetRegexTest(event);
-							fetchData('email', event.target.value);
-							getData(event.target.name, event.target.value);
+						autoComplete="none"
+						onChange={() => {
+							handleValue(emailInputBox);
+							handleSetRegexTest(emailInputBox);
+							fetchData('email', emailInputBox.current.value);
+							getData(emailInputBox.current.name, emailInputBox.current.value);
 						}}
-						onBlur={handleValueTouched}
+						onBlur={() => {
+							handleValueTouched(emailInputBox);
+						}}
 					/>
 					<button
 						type="button"
 						onClick={() => {
-							handleEmailValidateCodeBoxToggle();
 							handleEmailInputBoxToggle();
+							handleEmailValidateCodeBoxToggle();
 							requestValidateCode();
 						}}
 						disabled={
@@ -363,18 +349,25 @@ export default function SignUpValueBox({ sort, getData }) {
 						Send validate code
 					</button>
 					{/*   */}
+					{/* 사용자가 값을 입력 할 때 마다 이미 DB에 등록 된 값인지 확인하여 안내문구 출력 */}
+					{checkDataExists ? <NoticeComponent sort={'dataExists'} /> : null}
+					{/*   */}
 					{/* 사용자의 focus가 있었으나 입력값이 존재하지 않을 경우 안내문구 출력 */}
-					{!values.email && touched.email ? <NoticeEmptyInputValue /> : null}
+					{!emailInputBox.current?.value && touched.email ? (
+						<NoticeComponent sort={'emptyValue'} />
+					) : null}
 					{/*   */}
 					{/* 사용자의 입력값은 존재하나 정규식을 만족하지 않을 경우 안내문구 출력 */}
-					{(values.email && regexTest.email) === false ? (
-						<NoticeInvalidInputValue sort={'email'} />
+					{emailInputBox.current?.value && !regexTest.email ? (
+						<NoticeComponent sort={'invalidRegexEmail'} />
 					) : null}
+
+					{/* email이 정규식을 통과하고 validatecode가 발송되었을 때, 하기 html이 toggle됨 */}
 					{validateCodeBoxToggle ? (
 						<div>
 							<input
 								id="emailValidateCodeInput"
-								disabled={validateCodeInputBoxToggle}
+								disabled={validateCodeMatchCheck}
 								autoFocus={true}
 								ref={emailValidateCheckInputBox}
 								onChange={handleValidateCodeInputCheck}
@@ -384,64 +377,37 @@ export default function SignUpValueBox({ sort, getData }) {
 								className="emailValidateCodeButton"
 								type="button"
 								onClick={() => {
-									handleSetEmailValidateInputBoxToggle();
+									setValidateCodeInputBoxToggle(false);
 									checkValidateCode();
-									handleSetCheckSubmitValidateCode();
 								}}
-								disabled={!validateCodeInputCheck || checkSumbitValidateCode}
+								disabled={!validateCodeInputCheck || checkSubmitValidateCode}
 							>
 								Confirm
 							</button>
-
+							<button
+								type="button"
+								className="emailCancelButton"
+								onClick={() => {
+									//HTML관련 toggle
+									handleEmailValidateCodeBoxToggle();
+									handleEmailInputBoxToggle();
+									setValidateCodeInputBoxToggle(false);
+									setCheckSubmitValidateCode(false);
+									//validateCode 확인 관련 logic toggle
+									setValidateCodeMatchCheck(false);
+									setCheckIfEmailConfirmed(false);
+									handleValidateCodeInputCheck();
+									setValidateCodeInputCheck(false);
+								}}
+							>
+								Cancel
+							</button>
+							<NoticeComponent sort={'validateCodeSent'} />
 							{validateCodeInputBoxToggle ? (
-								<>
-									<NoticeValidateCodeCheckResult
-										props={validateCodeMatchCheck}
-									/>
-									<button
-										type="button"
-										className="emailValidateCodeButton "
-										onClick={() => {
-											handleEmailValidateCodeBoxToggle();
-											handleEmailInputBoxToggle();
-											handleSetEmailValidateInputBoxToggle();
-											handleValidateCodeMatchCheck();
-											handleEmailConfirm();
-											handleResetValidateCodeInputCheck();
-											handleSetCheckSubmitValidateCode();
-										}}
-									>
-										Cancel
-									</button>
-								</>
-							) : (
-								<>
-									<button
-										type="button"
-										className="test"
-										onClick={() => {
-											handleEmailValidateCodeBoxToggle();
-											handleEmailInputBoxToggle();
-											handleSetEmailValidateInputBoxToggle();
-											handleValidateCodeMatchCheck();
-											handleEmailConfirm();
-											handleResetValidateCodeInputCheck();
-											handleSetCheckSubmitValidateCode();
-										}}
-									>
-										Cancel
-									</button>
-									<NoticeValidateCodeSent />
-								</>
-							)}
+								<NoticeValidateCodeCheckResult props={validateCodeMatchCheck} />
+							) : null}
 						</div>
-					) : (
-						<div>
-							{/*   */}
-							{/* 사용자가 값을 입력 할 때 마다 이미 DB에 등록 된 값인지 확인하여 안내문구 출력 */}
-							{checkDataExists === true ? <NoticeDataExists /> : null}
-						</div>
-					)}
+					) : null}
 				</div>
 			) : null}{' '}
 		</>

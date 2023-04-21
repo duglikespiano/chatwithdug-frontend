@@ -31,3 +31,9 @@
 	width: 400px;
 	height: 26px;
 }
+
+.emailCancelButton {
+	float: right;
+	width: 100px;
+	height: 26px;
+}

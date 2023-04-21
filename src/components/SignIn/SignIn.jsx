@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import './SignIn.css';
 
 export default function SignIn() {
-	const nameRegex = /[a-z0-9_-]{5,15}/;
+	const nameRegex = /^[a-zA-Z0-9_-]{5,15}$/;
 	const passwordRegex =
 		/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/;
 

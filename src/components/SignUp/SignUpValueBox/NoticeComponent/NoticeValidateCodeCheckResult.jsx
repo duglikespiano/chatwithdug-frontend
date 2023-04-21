@@ -1,8 +1,8 @@
 import './NoticeValidateCodeCheckResult.css';
 export default function NoticeValidateCodeCheckResult({ props }) {
 	return props ? (
-		<span id="noticeValidateCodeCheckResult">Validate code confirmed</span>
+		<div id="noticeValidateCodeCheckResult">Validate code confirmed</div>
 	) : (
-		<span id="noticeValidateCodeCheckResult">Wrong validate code</span>
+		<div id="noticeValidateCodeCheckResult">Wrong validate code</div>
 	);
 }

@@ -1,0 +1,10 @@
+.noticeInvalidInputValue {
+	font-size: 14px;
+	margin-bottom: 4px;
+}
+
+#noticeValidateCodeSent {
+	font-size: 14px;
+	height: 22px;
+	padding-top: 4px;
+}
