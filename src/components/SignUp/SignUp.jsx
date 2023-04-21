@@ -29,9 +29,9 @@ export default function SignUpForm() {
 			passwordRegex.test(values.password) === true &&
 			emailRegex.test(values.email) === true
 		) {
-			return 'goodToGo';
+			return true;
 		} else {
-			return 'somethingWrong';
+			return false;
 		}
 	};
 
@@ -89,7 +89,7 @@ export default function SignUpForm() {
 		};
 		try {
 			// 이름, 비밀번호, email이 정규식에 부합하는지 검사
-			if (checkRegexTest(values) === 'somethingWrong') {
+			if (checkRegexTest(values) === false) {
 				const error = new Error('INVALID FOR REGEX');
 				throw error;
 			} else if (values.password !== values.passwordCrossCheck) {

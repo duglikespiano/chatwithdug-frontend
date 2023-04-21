@@ -13,9 +13,9 @@ export default function SignIn() {
 			nameRegex.test(values.name) === true &&
 			passwordRegex.test(values.password) === true
 		) {
-			return 'goodToGo';
+			return true;
 		} else {
-			return 'somethingWrong';
+			return false;
 		}
 	};
 
@@ -30,7 +30,7 @@ export default function SignIn() {
 			password: inputPassword.current.value,
 		};
 		try {
-			if (checkRegexTest(fetchData) === 'somethingWrong') {
+			if (checkRegexTest(fetchData) === false) {
 				const error = new Error('INVALID FOR REGEX');
 				throw error;
 			}
