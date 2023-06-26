@@ -1,25 +1,25 @@
-# chatwithdug_frontend(kr)
+# chatwithdug_frontend(jp)
+
+##### [한국어 버전은 이 곳을 클릭해주세요](README.md)
 
 ##### [Click here for English version](README_EN.md)
 
-##### [日本語バージョンはこちらをクリックして下さい](README_JP.md)
+## - 目次 -
 
-## - 목차 -
-
-1. 개요
-2. 프로젝트목표
-3. 기능시연
-4. 차후구현예정기능
+1. 概要
+2. Project 目標
+3. 機能試演
+4. 今後具現予定機能
    </br>
    </br>
 
-### 1. 개요
+### 1. 概要
 
-- 프로젝트명 : chatwithdug_frontend
+- Project タイトル: chatwithdug_frontend
 - URL : https://chatwithdug.netlify.app
-- 기간 : 2023.03.01 - 진행 중
-- 인원 : 1인
-- 기술스택 : </br>
+- 期間 : 2023.03.01 - 進行中
+- 人員 : 1 人
+- 技術スタック : </br>
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
   <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white">
@@ -28,31 +28,31 @@
   </br>
   </br>
 
-### 2. 프로젝트목표
+### 2. Project 目標
 
-1. WebSocket을 활용한 채팅 사이트를 구현 할 것
-2. 회원가입을 구현 할 것
-3. 배포하여 유지 보수, 운용 할 것
-4. 백엔드서버와 연동 가능하도록 구현 할 것
+1. WebSocket を活用したチャットページを具現する事
+2. 会員加入を具現する事
+3. 配布して維持保守、運用する事
+4. backend server との連動出来るように具現する事
    </br>
    </br>
 
-### 3. 기능시연 </br>
+### 3. 機能試演 </br>
 
-1. 회원가입 및 로그인</br>
+1. 会員加入及びログイン</br>
    <img src='./src/images/signup1.gif' width=300px>
    <img src='./src/images/signup2.gif' width=300px>
-2. 채팅방 초대거절</br>
+2. チャットルーム招待断り</br>
    <img src='./src/images/inviteDeny.gif' width=300px>
-3. 채팅방 초대수락</br>
+3. チャットルーム招待承諾</br>
    <img src='./src/images/inviteAccept.gif' width=300px>
-4. 채팅방 사용</br>
+4. チャットルーム利用</br>
    <img src='./src/images/room.gif' width=300px>
-5. 채팅방 퇴장</br>
+5. チャットルーム退場</br>
    <img src='./src/images/leaveRoom.gif' width=300px>
    </br>
    </br>
 
-### 4. 차후구현예정기능
+### 4. 今後具現予定機能
 
-- 전체적인 UI 개선
+- 全体的な UI 改善
