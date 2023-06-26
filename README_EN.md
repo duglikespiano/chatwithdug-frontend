@@ -9,7 +9,7 @@
 1. Overview
 2. Project goal
 3. Features demo
-4. Features for the next version
+4. What needs to get fixed
    </br>
    </br>
 
@@ -17,12 +17,13 @@
 
 - Project title : chatwithdug_frontend
 - URL : https://chatwithdug.netlify.app
-- Period : 2023.03.01 - in progress
+- Period : Mar 01 2023 - Apr 27 2023(2months)
 - Member(s) : Dug Park
 - Tech stack : </br>
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
   <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white">
+  <img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=socketdotio&logoColor=white">
   <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white">
   <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
   </br>
@@ -31,9 +32,9 @@
 ### 2. Project goal
 
 1. Creating a simple chat page using WebSocket
-2. Creating signup page
-3. Have to deploy for maintenance and operation
-4. Have to be able to interact with backend server
+2. Creating pages to manage members
+3. Have to be able to interact with backend server
+4. Have to deploy for maintenance and operation
    </br>
    </br>
 
@@ -53,6 +54,6 @@
    </br>
    </br>
 
-### 4. Features for the next version
+### 4. What needs to get fixed
 
 - Overall UI improvement
